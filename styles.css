@@ -1,0 +1,73 @@
+/*** Basic Reset ***/
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/** Body Styles **/
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    background-color: white; /* Background color */
+    color: #333; /* Text color */
+}
+
+/** Header Styles **/
+header {
+    background-color: #4CAF50; /* Green */
+    color: white;
+    padding: 20px;
+    text-align: center;
+}
+
+/** Navigation Styles **/
+nav {
+    background-color: #FFA500; /* Saffron */
+    padding: 15px;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    padding: 10px 15px;
+}
+
+nav a:hover {
+    background-color: #3e8e41; /* Darker green on hover */
+}
+
+/** Main Content Styles **/
+main {
+    padding: 20px;
+}
+
+/** Footer Styles **/
+footer {
+    background-color: #0000FF; /* Blue */
+    color: white;
+    text-align: center;
+    padding: 10px;
+}
+
+/** Button Styles **/
+.button {
+    background-color: #4CAF50; /* Green */
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    cursor: pointer;
+}
+
+.button:hover {
+    background-color: #3e8e41; /* Darker green */
+}
+
+/** Card Styles **/
+.card {
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 20px;
+    margin: 15px 0;
+}
