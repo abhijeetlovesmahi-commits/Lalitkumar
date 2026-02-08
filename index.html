@@ -11,10 +11,6 @@
     :root {
       --gold: #D4AF37;
       --deep-blue: #000c1a;
-      --ruby: #9b111e;
-      --emerald: #046307;
-      --sapphire: #0f52ba;
-      --amethyst: #9966cc;
       --glass: rgba(255, 255, 255, 0.05);
     }
 
@@ -30,189 +26,63 @@
       align-items: center;
     }
 
-    /* Header Section */
-    .royal-header {
-      text-align: center;
-      padding: 50px 20px 30px;
-      animation: fadeIn 1.5s ease-in;
-    }
+    .royal-header { text-align: center; padding: 50px 20px 30px; }
+    .royal-logo { width: 140px; height: 140px; border-radius: 50%; border: 3px solid var(--gold); background: white; margin-bottom: 20px; }
+    .royal-header h1 { font-family: 'Cinzel', serif; font-size: 2.5rem; color: var(--gold); letter-spacing: 4px; margin: 0; }
+    
+    .royal-news { width: 100%; background: rgba(212, 175, 55, 0.1); padding: 10px 0; border-top: 1px solid var(--gold); border-bottom: 1px solid var(--gold); margin-bottom: 40px; text-align: center; color: var(--gold); font-family: 'Cinzel', serif; }
 
-    .royal-logo {
-      width: 140px;
-      height: 140px;
-      border-radius: 50%;
-      border: 3px solid var(--gold);
-      padding: 8px;
-      background: white;
-      box-shadow: 0 0 30px rgba(212, 175, 55, 0.4);
-      margin-bottom: 20px;
-      transition: transform 0.5s;
-    }
+    .gem-section { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; width: 90%; max-width: 1000px; padding-bottom: 30px; }
+    .gem { text-decoration: none; padding: 20px; text-align: center; border-radius: 15px; background: var(--glass); border: 1px solid rgba(255,255,255,0.1); color: white; backdrop-filter: blur(10px); transition: 0.4s; font-family: 'Cinzel', serif; }
+    .gem:hover { transform: translateY(-5px); border-color: var(--gold); box-shadow: 0 10px 20px rgba(0,0,0,0.4); }
 
-    .royal-logo:hover {
-      transform: rotateY(180deg);
-    }
+    /* Admission Form Styling */
+    .form-container { width: 90%; max-width: 500px; background: rgba(255,255,255,0.03); padding: 30px; border-radius: 20px; border: 1px solid var(--gold); margin-bottom: 50px; text-align: center; }
+    .form-container h2 { font-family: 'Cinzel', serif; color: var(--gold); margin-bottom: 20px; }
+    .form-container input { width: 100%; padding: 12px; margin: 10px 0; background: transparent; border: 1px solid rgba(212, 175, 55, 0.5); color: white; border-radius: 8px; box-sizing: border-box; }
+    .form-container button { width: 100%; padding: 15px; background: var(--gold); color: black; border: none; font-weight: bold; border-radius: 8px; cursor: pointer; font-family: 'Cinzel', serif; margin-top: 10px; transition: 0.3s; }
+    .form-container button:hover { background: #b8952d; transform: scale(1.02); }
 
-    .royal-header h1 {
-      font-family: 'Cinzel', serif;
-      font-size: 2.5rem;
-      color: var(--gold);
-      margin: 0;
-      letter-spacing: 4px;
-      text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
-    }
-
-    .royal-header p {
-      font-size: 1.1rem;
-      letter-spacing: 5px;
-      color: #ccc;
-      text-transform: uppercase;
-      margin-top: 10px;
-    }
-
-    /* News Ticker */
-    .royal-news {
-      width: 100%;
-      background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.2), transparent);
-      padding: 10px 0;
-      border-top: 1px solid var(--gold);
-      border-bottom: 1px solid var(--gold);
-      margin-bottom: 40px;
-      text-align: center;
-      font-family: 'Cinzel', serif;
-      color: var(--gold);
-      overflow: hidden;
-    }
-
-    #newsText {
-      display: inline-block;
-      white-space: nowrap;
-      animation: scrollNews 15s linear infinite;
-    }
-
-    /* Gem Buttons Grid */
-    .gem-section {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 20px;
-      width: 90%;
-      max-width: 1000px;
-      padding-bottom: 50px;
-    }
-
-    .gem {
-      text-decoration: none;
-      padding: 20px;
-      text-align: center;
-      font-family: 'Cinzel', serif;
-      font-weight: bold;
-      font-size: 1.1rem;
-      border-radius: 15px;
-      transition: 0.4s;
-      border: 1px solid rgba(255,255,255,0.1);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: var(--glass);
-      backdrop-filter: blur(10px);
-      color: white;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .gem::before {
-      content: '';
-      position: absolute;
-      top: -50%;
-      left: -50%;
-      width: 200%;
-      height: 200%;
-      background: rgba(255,255,255,0.1);
-      transform: rotate(45deg);
-      transition: 0.5s;
-    }
-
-    .gem:hover::before {
-      left: 100%;
-    }
-
-    .gem:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 10px 20px rgba(0,0,0,0.4);
-      border-color: var(--gold);
-    }
-
-    /* Gem Colors */
-    .ruby:hover { border-left: 5px solid var(--ruby); color: #ff4d4d; }
-    .emerald:hover { border-left: 5px solid var(--emerald); color: #2ecc71; }
-    .sapphire:hover { border-left: 5px solid var(--sapphire); color: #3498db; }
-    .amethyst:hover { border-left: 5px solid var(--amethyst); color: #bb8fce; }
-    .gold:hover { border-left: 5px solid var(--gold); color: var(--gold); }
-
-    /* Footer */
-    .royal-footer {
-      margin-top: auto;
-      width: 100%;
-      text-align: center;
-      padding: 30px 0;
-      background: rgba(0,0,0,0.5);
-      border-top: 1px solid var(--gold);
-      font-size: 0.9rem;
-      letter-spacing: 2px;
-    }
-
-    .royal-footer span {
-      color: var(--gold);
-      font-weight: bold;
-    }
-
-    /* Animations */
-    @keyframes scrollNews {
-      0% { transform: translateX(100%); }
-      100% { transform: translateX(-100%); }
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(-20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    @media (max-width: 600px) {
-      .royal-header h1 { font-size: 1.5rem; }
-      .gem-section { grid-template-columns: 1fr; }
-    }
+    .royal-footer { width: 100%; text-align: center; padding: 30px 0; background: rgba(0,0,0,0.5); border-top: 1px solid var(--gold); font-size: 0.9rem; }
+    span.gold-text { color: var(--gold); font-weight: bold; }
   </style>
 </head>
-
 <body>
 
 <header class="royal-header">
   <img src="./logo.png" class="royal-logo" alt="School Logo">
   <h1>The Lalit International School</h1>
-  <p>Imperial Knowledge • Global Vision</p>
+  <p style="letter-spacing: 5px; color: #ccc;">Imperial Knowledge • Global Vision</p>
 </header>
 
 <section class="royal-news">
-  <div id="newsText">✦ Admissions Open for Session 2026–27 ✦ Excellence in Education ✦ Legacy of Scholars ✦ </div>
+  <div id="newsText">✦ Admissions Open for Session 2026–27 ✦ Excellence in Education ✦</div>
 </section>
 
 <section class="gem-section">
-  <a href="about.html" class="gem ruby">About Institution</a>
-  <a href="admission.html" class="gem emerald">Admissions</a>
-  <a href="academics.html" class="gem sapphire">Academics</a>
-  <a href="login.html" class="gem amethyst">Student Portal</a>
-  <a href="login.html" class="gem amethyst">Faculty Portal</a>
-
-  <a href="login.html" class="gem gold" style="background: rgba(212, 175, 55, 0.1);">LOGIN / SIGNUP</a>
-
-  <a href="contact.html" class="gem gold">Contact Us</a>
+  <a href="#" class="gem">About Institution</a>
+  <a href="#" class="gem">Student Portal</a>
+  <a href="#" class="gem">Faculty Portal</a>
+  <a href="#" class="gem">Contact Us</a>
 </section>
 
+<div class="form-container">
+  <h2>Student Admission Form</h2>
+  <input type="text" id="stuName" placeholder="Student Full Name">
+  <input type="text" id="stuClass" placeholder="Class (e.g. 10th)">
+  <input type="number" id="stuRoll" placeholder="Roll Number">
+  <button onclick="saveData()">SUBMIT TO IMPERIAL DATABASE</button>
+</div>
+
 <footer class="royal-footer">
-  © 2026 The Lalit International School  
-  <br><br>
-  <span>Legacy • Discipline • Excellence</span>
+  © 2026 The Lalit International School <br><br>
+  <span class="gold-text">Legacy • Discipline • Excellence</span>
 </footer>
+
+<script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore-compat.js"></script>
+
+<script src="script.js"></script>
 
 </body>
 </html>
