@@ -3,87 +3,86 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Professional Report Generator | LIS</title>
+    <title>Official Report Generator | LIS</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Cinzel:wght@700&display=swap');
 
-        body { font-family: 'Poppins', sans-serif; background: #f4f7f6; padding: 20px; }
-        .form-wrap { max-width: 1000px; margin: 0 auto; background: white; padding: 30px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
-        h2 { font-family: 'Cinzel'; color: #4a0404; text-align: center; border-bottom: 2px solid #D4AF37; padding-bottom: 10px; }
+        body { font-family: 'Poppins', sans-serif; background: #f0f2f5; padding: 20px; }
+        .form-wrap { max-width: 1100px; margin: 0 auto; background: white; padding: 30px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); border-top: 8px solid #4a0404; }
         
-        .section-title { background: #4a0404; color: #D4AF37; padding: 8px 15px; margin: 20px 0 10px; font-size: 14px; text-transform: uppercase; letter-spacing: 1px; }
-        .grid-inputs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; }
+        h2 { font-family: 'Cinzel'; color: #4a0404; text-align: center; margin-bottom: 30px; }
+        .section-title { background: #4a0404; color: #D4AF37; padding: 10px; margin: 20px 0; font-size: 14px; text-transform: uppercase; font-weight: bold; border-radius: 5px; }
+        
+        .grid-inputs { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; }
         .input-box { display: flex; flex-direction: column; }
-        label { font-size: 12px; font-weight: 600; margin-bottom: 5px; color: #555; }
-        input { padding: 8px; border: 1px solid #ccc; border-radius: 4px; outline: none; }
+        label { font-size: 12px; font-weight: 600; margin-bottom: 5px; color: #4a0404; }
+        input, select { padding: 10px; border: 1px solid #ccc; border-radius: 6px; }
 
         table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 12px; }
-        th, td { border: 1px solid #4a0404; padding: 5px; text-align: center; }
-        th { background: #f9f2e6; }
-        .sub-name { text-align: left; font-weight: 600; width: 150px; }
-        input[type="number"] { width: 45px; border: none; background: transparent; text-align: center; font-family: inherit; }
+        th, td { border: 1px solid #4a0404; padding: 8px; text-align: center; }
+        th { background: #f9f2e6; color: #4a0404; }
+        
+        .btn-container { text-align: center; margin-top: 40px; }
+        .btn-download { background: linear-gradient(45deg, #4a0404, #800000); color: #D4AF37; padding: 15px 50px; border: none; border-radius: 50px; font-weight: bold; cursor: pointer; font-size: 18px; box-shadow: 0 5px 15px rgba(0,0,0,0.3); transition: 0.3s; }
+        .btn-download:hover { transform: scale(1.05); background: #D4AF37; color: #4a0404; }
 
-        .btn-container { text-align: center; margin-top: 30px; }
-        .btn-download { background: #D4AF37; color: #000; padding: 15px 40px; border: none; border-radius: 50px; font-weight: bold; cursor: pointer; font-size: 16px; box-shadow: 0 4px 15px rgba(212, 175, 55, 0.4); }
+        /* PDF PREVIEW STYLING */
+        #printable-report { 
+            width: 800px; padding: 40px; background: white; border: 2px solid #4a0404; 
+            position: absolute; left: -9999px; overflow: hidden;
+        }
+        
+        /* Watermark Logo */
+        .watermark {
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(-30deg);
+            opacity: 0.08; width: 400px; z-index: 0; pointer-events: none;
+        }
 
-        /* Report Preview Layout (Mirror of Image) */
-        #printable-report { width: 800px; padding: 30px; background: white; border: 10px double #4a0404; margin: 20px auto; position: absolute; left: -9999px; }
-        .header-rep { text-align: center; }
-        .header-rep h1 { font-family: 'Cinzel'; margin: 0; font-size: 28px; color: #4a0404; }
-        .student-photo-frame { width: 100px; height: 120px; border: 1px solid #4a0404; float: right; display: flex; align-items: center; justify-content: center; overflow: hidden; }
-        .student-photo-frame img { width: 100%; height: 100%; object-fit: cover; }
-        .clearfix::after { content: ""; clear: both; display: table; }
+        .report-content { position: relative; z-index: 1; }
+        .header-rep { display: flex; align-items: center; justify-content: space-between; border-bottom: 3px double #4a0404; padding-bottom: 15px; }
+        .header-text { text-align: center; flex-grow: 1; }
+        .header-text h1 { font-family: 'Cinzel'; font-size: 26px; color: #4a0404; margin: 0; }
+        
+        .stu-photo { width: 90px; height: 110px; border: 2px solid #4a0404; object-fit: cover; }
+        .info-table { width: 100%; margin: 20px 0; border: none; }
+        .info-table td { border: none; text-align: left; padding: 4px; font-size: 14px; }
     </style>
 </head>
 <body>
 
 <div class="form-wrap">
-    <h2>Academic Session: 2026-27 | Report Entry</h2>
+    <h2><img src="logo.png" width="40" style="vertical-align: middle;"> Report Card Generator</h2>
     
-    <div class="section-title">1. Student Essentials</div>
+    <div class="section-title">Step 1: Student Information</div>
     <div class="grid-inputs">
-        <div class="input-box"><label>Student Name</label><input type="text" id="s_name"></div>
-        <div class="input-box"><label>Father's Name</label><input type="text" id="f_name"></div>
-        <div class="input-box"><label>Roll No.</label><input type="number" id="roll_no"></div>
+        <div class="input-box"><label>Student Name</label><input type="text" id="s_name" placeholder="Full Name"></div>
+        <div class="input-box"><label>Roll No.</label><input type="text" id="roll_no"></div>
         <div class="input-box"><label>Class/Section</label><input type="text" id="class_sec"></div>
-        <div class="input-box"><label>Date of Birth</label><input type="date" id="dob"></div>
-        <div class="input-box"><label>Upload Photo</label><input type="file" id="photo_input" accept="image/*"></div>
+        <div class="input-box"><label>Session</label><input type="text" id="session" value="2026-27"></div>
+        <div class="input-box"><label>Photo</label><input type="file" id="photo_input" accept="image/*"></div>
     </div>
 
-    <div class="section-title">2. Scholastic Areas (Term 1 & 2)</div>
-    <p style="font-size: 11px; color: red;">* Total & Grade will calculate automatically based on (Per.Test/10 + NoteBk/5 + SEA/5 + Exam/80 = 100)</p>
-    
-    <table>
+    <div class="section-title">Step 2: Scholastic Marks (Term-1)</div>
+    <table id="input-table">
         <thead>
             <tr>
-                <th rowspan="2">Subject</th>
-                <th colspan="5">Term-1 (100 Marks)</th>
-                <th colspan="5">Term-2 (100 Marks)</th>
-            </tr>
-            <tr>
-                <th>PT(10)</th><th>NB(5)</th><th>SEA(5)</th><th>Exam(80)</th><th>Total</th>
-                <th>PT(10)</th><th>NB(5)</th><th>SEA(5)</th><th>Exam(80)</th><th>Total</th>
+                <th>Subject</th>
+                <th>PT (10)</th><th>NB (5)</th><th>SEA (5)</th><th>Half Yearly (80)</th>
             </tr>
         </thead>
-        <tbody id="marks-body">
+        <tbody>
             <script>
-                const subs = ["Language 1", "Language 2", "Mathematics", "Science", "So. Science", "Computer"];
-                subs.forEach((s, idx) => {
+                const subjects = ["Language 1", "Language 2", "Mathematics", "Science", "So. Science"];
+                subjects.forEach((sub, i) => {
                     document.write(`
                         <tr>
-                            <td class="sub-name">${s}</td>
-                            <td><input type="number" class="t1-pt" oninput="calc(${idx})"></td>
-                            <td><input type="number" class="t1-nb" oninput="calc(${idx})"></td>
-                            <td><input type="number" class="t1-sea" oninput="calc(${idx})"></td>
-                            <td><input type="number" class="t1-ex" oninput="calc(${idx})"></td>
-                            <td class="t1-tot" style="font-weight:bold">0</td>
-                            <td><input type="number" class="t2-pt" oninput="calc(${idx})"></td>
-                            <td><input type="number" class="t2-nb" oninput="calc(${idx})"></td>
-                            <td><input type="number" class="t2-sea" oninput="calc(${idx})"></td>
-                            <td><input type="number" class="t2-ex" oninput="calc(${idx})"></td>
-                            <td class="t2-tot" style="font-weight:bold">0</td>
+                            <td style="text-align:left; font-weight:bold;">${sub}</td>
+                            <td><input type="number" class="pt" value="0"></td>
+                            <td><input type="number" class="nb" value="0"></td>
+                            <td><input type="number" class="sea" value="0"></td>
+                            <td><input type="number" class="hy" value="0"></td>
                         </tr>
                     `);
                 });
@@ -91,110 +90,136 @@
         </tbody>
     </table>
 
+    <div class="section-title">Step 3: Co-Scholastic & Remarks</div>
+    <div class="grid-inputs">
+        <div class="input-box"><label>Work Education (Grade)</label><input type="text" id="work_ed" placeholder="A, B, C"></div>
+        <div class="input-box"><label>Art Education (Grade)</label><input type="text" id="art_ed" placeholder="A, B, C"></div>
+        <div class="input-box"><label>Health & PE (Grade)</label><input type="text" id="health_pe" placeholder="A, B, C"></div>
+        <div class="input-box" style="grid-column: span 2;"><label>Teacher's Remarks</label><input type="text" id="remarks" placeholder="Excellent Performance!"></div>
+    </div>
+
     <div class="btn-container">
-        <button class="btn-download" onclick="generatePDF()">Download Royal Report Card (PDF)</button>
+        <button class="btn-download" onclick="generatePDF()">Download Official PDF</button>
     </div>
 </div>
 
 <div id="printable-report">
-    <div class="header-rep clearfix">
-        <img src="logo.png" style="width:80px; float:left">
-        <div style="display:inline-block">
-            <h1>The Lalit International School</h1>
-            <p>Affiliated to CBSE | Imperial Excellence</p>
-            <h3>Academic Session: 2026-27</h3>
-            <h2 style="margin:5px">REPORT CARD</h2>
+    <img src="logo.png" class="watermark">
+    <div class="report-content">
+        <div class="header-rep">
+            <img src="logo.png" width="80">
+            <div class="header-text">
+                <h1>THE LALIT INTERNATIONAL SCHOOL</h1>
+                <p>Imperial Knowledge • Global Vision</p>
+                <p>Affiliated to CBSE | Session: <span id="r_session"></span></p>
+                <h2 style="margin-top:10px; text-decoration: underline;">REPORT CARD</h2>
+            </div>
+            <img id="preview_img" class="stu-photo" src="logo.png">
         </div>
-        <div class="student-photo-frame"><img id="preview_img" src=""></div>
-    </div>
 
-    <div class="clearfix" style="margin-top:20px; border-bottom:2px solid #4a0404; padding-bottom:10px">
-        <div style="float:left; width:50%">
-            <p><strong>Student Name:</strong> <span id="r_name"></span></p>
-            <p><strong>Father's Name:</strong> <span id="r_fname"></span></p>
-            <p><strong>Roll No:</strong> <span id="r_roll"></span></p>
-        </div>
-        <div style="float:right; width:40%">
-            <p><strong>Class:</strong> <span id="r_class"></span></p>
-            <p><strong>DOB:</strong> <span id="r_dob"></span></p>
-        </div>
-    </div>
-
-    <table id="final-table" style="margin-top:20px">
+        <table class="info-table">
+            <tr>
+                <td><strong>Student Name:</strong> <span id="r_name"></span></td>
+                <td><strong>Roll No:</strong> <span id="r_roll"></span></td>
+            </tr>
+            <tr>
+                <td><strong>Class:</strong> <span id="r_class"></span></td>
+                <td><strong>Promoted to:</strong> Next Grade</td>
+            </tr>
         </table>
 
-    <div style="margin-top:40px; display:flex; justify-content:space-between; text-align:center">
-        <div><br>___________________<br>Class Teacher</div>
-        <div><br>___________________<br>Principal Signature</div>
+        <table style="margin-top:10px;">
+            <thead>
+                <tr>
+                    <th rowspan="2">SCHOLASTIC AREAS</th>
+                    <th colspan="6">TERM - 1 (100 MARKS)</th>
+                </tr>
+                <tr>
+                    <th>PT (10)</th><th>NB (5)</th><th>SEA (5)</th><th>HY (80)</th><th>TOTAL</th><th>GRADE</th>
+                </tr>
+            </thead>
+            <tbody id="pdf-marks-body"></tbody>
+        </table>
+
+        <table style="margin-top:20px;">
+            <tr><th colspan="2">CO-SCHOLASTIC AREAS [Grade A-C]</th></tr>
+            <tr><td>Work Education</td><td id="r_work"></td></tr>
+            <tr><td>Art Education</td><td id="r_art"></td></tr>
+            <tr><td>Health & Physical Education</td><td id="r_health"></td></tr>
+        </table>
+
+        <div style="margin-top:20px; border:1px solid #4a0404; padding:10px;">
+            <strong>Teacher's Remarks:</strong> <span id="r_remarks"></span>
+        </div>
+
+        <div style="margin-top:50px; display:flex; justify-content:space-between; text-align:center;">
+            <div><br>___________________<br>Class Teacher</div>
+            <div><br>___________________<br>Principal Signature</div>
+        </div>
     </div>
 </div>
 
 <script>
-    function getGrade(marks) {
-        if (marks >= 91) return "A1";
-        if (marks >= 81) return "A2";
-        if (marks >= 71) return "B1";
-        if (marks >= 61) return "B2";
-        if (marks >= 51) return "C1";
-        if (marks >= 41) return "C2";
-        if (marks >= 33) return "D";
-        return "E";
+    function getGrade(m) {
+        if(m >= 91) return "A1"; if(m >= 81) return "A2"; if(m >= 71) return "B1";
+        if(m >= 61) return "B2"; if(m >= 51) return "C1"; if(m >= 41) return "C2";
+        if(m >= 33) return "D"; return "E";
     }
 
-    function calc(idx) {
-        const row = document.querySelectorAll('#marks-body tr')[idx];
-        // Term 1
-        const t1 = (parseFloat(row.querySelector('.t1-pt').value)||0) + (parseFloat(row.querySelector('.t1-nb').value)||0) + 
-                   (parseFloat(row.querySelector('.t1-sea').value)||0) + (parseFloat(row.querySelector('.t1-ex').value)||0);
-        row.querySelector('.t1-tot').innerText = t1;
-        // Term 2
-        const t2 = (parseFloat(row.querySelector('.t2-pt').value)||0) + (parseFloat(row.querySelector('.t2-nb').value)||0) + 
-                   (parseFloat(row.querySelector('.t2-sea').value)||0) + (parseFloat(row.querySelector('.t2-ex').value)||0);
-        row.querySelector('.t2-tot').innerText = t2;
-    }
-
-    // Photo Preview Handle
-    document.getElementById('photo_input').onchange = function(e) {
-        const reader = new FileReader();
-        reader.onload = function() { document.getElementById('preview_img').src = reader.result; };
+    // Photo Preview
+    document.getElementById('photo_input').onchange = (e) => {
+        let reader = new FileReader();
+        reader.onload = () => document.getElementById('preview_img').src = reader.result;
         reader.readAsDataURL(e.target.files[0]);
     };
 
     async function generatePDF() {
         const { jsPDF } = window.jspdf;
         
-        // Map Form to Report
+        // Data Mapping
         document.getElementById('r_name').innerText = document.getElementById('s_name').value;
-        document.getElementById('r_fname').innerText = document.getElementById('f_name').value;
         document.getElementById('r_roll').innerText = document.getElementById('roll_no').value;
         document.getElementById('r_class').innerText = document.getElementById('class_sec').value;
-        document.getElementById('r_dob').innerText = document.getElementById('dob').value;
+        document.getElementById('r_session').innerText = document.getElementById('session').value;
+        document.getElementById('r_work').innerText = document.getElementById('work_ed').value;
+        document.getElementById('r_art').innerText = document.getElementById('art_ed').value;
+        document.getElementById('r_health').innerText = document.getElementById('health_pe').value;
+        document.getElementById('r_remarks').innerText = document.getElementById('remarks').value;
 
-        // Clone Table for PDF
-        const finalTable = document.getElementById('final-table');
-        finalTable.innerHTML = document.querySelector('table').innerHTML;
-        // Update totals and add Grades column in PDF
-        const pdfRows = finalTable.querySelectorAll('tbody tr');
-        const formRows = document.querySelectorAll('#marks-body tr');
+        // Scholastic Marks Mapping
+        const pdfBody = document.getElementById('pdf-marks-body');
+        pdfBody.innerHTML = "";
+        const rows = document.querySelectorAll('#input-table tbody tr');
         
-        pdfRows.forEach((row, i) => {
-            const t1Tot = parseFloat(formRows[i].querySelector('.t1-tot').innerText);
-            const t2Tot = parseFloat(formRows[i].querySelector('.t2-tot').innerText);
-            row.innerHTML += `<td>${getGrade(t1Tot)}</td><td>${getGrade(t2Tot)}</td>`;
+        rows.forEach((row, i) => {
+            const pt = parseFloat(row.querySelectorAll('input')[0].value) || 0;
+            const nb = parseFloat(row.querySelectorAll('input')[1].value) || 0;
+            const sea = parseFloat(row.querySelectorAll('input')[2].value) || 0;
+            const hy = parseFloat(row.querySelectorAll('input')[3].value) || 0;
+            const total = pt + nb + sea + hy;
+            
+            pdfBody.innerHTML += `
+                <tr>
+                    <td style="text-align:left;">${subjects[i]}</td>
+                    <td>${pt}</td><td>${nb}</td><td>${sea}</td><td>${hy}</td>
+                    <td style="font-weight:bold;">${total}</td>
+                    <td style="font-weight:bold;">${getGrade(total)}</td>
+                </tr>
+            `;
         });
-        // Add Grade headers
-        finalTable.querySelector('thead tr').innerHTML += `<th rowspan="2">Grd 1</th><th rowspan="2">Grd 2</th>`;
 
-        // Capture & Save
         const report = document.getElementById('printable-report');
         report.style.position = "static";
-        const canvas = await html2canvas(report, {scale: 2});
+        
+        const canvas = await html2canvas(report, { scale: 3, useCORS: true });
         const imgData = canvas.toDataURL('image/png');
         const pdf = new jsPDF('p', 'mm', 'a4');
         pdf.addImage(imgData, 'PNG', 0, 0, 210, 297);
         pdf.save(`${document.getElementById('s_name').value}_Report.pdf`);
+        
         report.style.position = "absolute";
     }
 </script>
+
 </body>
 </html>
