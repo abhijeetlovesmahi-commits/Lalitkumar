@@ -1,26 +1,36 @@
-// script.js
+/* ===== GEM BUTTON GLOW ===== */
+const gems = document.querySelectorAll(".gem");
 
-// Function to handle login
-function handleLogin() {
-    const username = document.getElementById('username').value;
-    const password = document.getElementById('password').value;
-    // Logic for login validation
-    console.log('Logging in with', username);
+gems.forEach(gem => {
+  gem.addEventListener("mouseenter", () => {
+    gem.style.boxShadow =
+      "0 0 20px gold, 0 0 40px rgba(255,215,0,0.6)";
+  });
+
+  gem.addEventListener("mouseleave", () => {
+    gem.style.boxShadow =
+      "0 10px 25px rgba(0,0,0,0.7)";
+  });
+});
+
+/* ===== NEWS AUTO ROTATION ===== */
+const newsTexts = [
+  "✦ Admissions Open 2026–27 ✦",
+  "✦ International Curriculum ✦",
+  "✦ Elite Faculty & Infrastructure ✦",
+  "✦ Legacy of Excellence ✦"
+];
+
+let newsIndex = 0;
+const newsBar = document.querySelector(".news marquee");
+
+setInterval(() => {
+  newsIndex = (newsIndex + 1) % newsTexts.length;
+  newsBar.innerText = newsTexts[newsIndex];
+}, 3000);
+
+/* ===== MOBILE MENU (future ready) ===== */
+function toggleMenu(){
+  const menu = document.getElementById("mobileMenu");
+  menu.classList.toggle("show");
 }
-
-// Function to handle form submission
-function handleFormSubmit(event) {
-    event.preventDefault(); // Prevents the default form submission
-    const formData = new FormData(event.target);
-    // Process form data
-    console.log('Form data submitted:', Object.fromEntries(formData));
-}
-
-// Function to initialize interactive features
-function initInteractiveFeatures() {
-    document.getElementById('loginButton').addEventListener('click', handleLogin);
-    document.getElementById('form').addEventListener('submit', handleFormSubmit);
-}
-
-// Call the initialization function when the DOM is fully loaded
-document.addEventListener('DOMContentLoaded', initInteractiveFeatures);
