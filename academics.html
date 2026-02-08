@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Academics | The Lalit International School</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Poppins:wght@300;400;600&display=swap');
+
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: #000c1a;
+      color: white;
+      text-align: center;
+    }
+
+    .academic-header {
+      padding: 60px 20px;
+      background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1523050853021-eb9e1f390ed8?auto=format&fit=crop&q=80');
+      background-size: cover;
+      border-bottom: 3px solid #D4AF37;
+    }
+
+    h1 { font-family: 'Cinzel', serif; color: #D4AF37; font-size: 2.5rem; margin: 0; }
+
+    .curriculum-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 30px;
+      padding: 50px 10% ;
+    }
+
+    .wing-card {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid #D4AF37;
+      padding: 30px;
+      border-radius: 20px;
+      transition: 0.3s;
+    }
+
+    .wing-card:hover {
+      background: rgba(212, 175, 55, 0.1);
+      transform: translateY(-10px);
+    }
+
+    .wing-card h2 { color: #D4AF37; font-family: 'Cinzel'; }
+
+    .subject-list {
+      list-style: none;
+      padding: 0;
+      color: #ccc;
+    }
+
+    .subject-list li {
+      margin: 10px 0;
+      border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+      padding-bottom: 5px;
+    }
+
+    .back-home {
+      display: inline-block;
+      margin: 40px;
+      color: #D4AF37;
+      text-decoration: none;
+      border: 1px solid #D4AF37;
+      padding: 10px 25px;
+      border-radius: 50px;
+      transition: 0.3s;
+    }
+
+    .back-home:hover { background: #D4AF37; color: #000; }
+  </style>
+</head>
+<body>
+
+  <header class="academic-header">
+    <h1>Imperial Curriculum</h1>
+    <p>Nurturing the Leaders of Tomorrow</p>
+  </header>
+
+  <div class="curriculum-grid">
+    <div class="wing-card">
+      <h2>Primary Wing</h2>
+      <p>(Grade 1 - 5)</p>
+      <ul class="subject-list">
+        <li>Foundational English</li>
+        <li>Mathematics & Logic</li>
+        <li>Environmental Science</li>
+        <li>Arts & Creativity</li>
+      </ul>
+    </div>
+
+    <div class="wing-card">
+      <h2>Middle & High Wing</h2>
+      <p>(Grade 6 - 10)</p>
+      <ul class="subject-list">
+        <li>Advanced Sciences</li>
+        <li>Global History</li>
+        <li>Computer Technology</li>
+        <li>Physical Education</li>
+      </ul>
+    </div>
+
+    <div class="wing-card">
+      <h2>Senior Secondary</h2>
+      <p>(Grade 11 - 12)</p>
+      <ul class="subject-list">
+        <li>Science (PCM/PCB)</li>
+        <li>Commerce & Economics</li>
+        <li>Humanities</li>
+        <li>Professional Skills</li>
+      </ul>
+    </div>
+  </div>
+
+  <a href="index.html" class="back-home">Return to Palace Home</a>
+
+</body>
+</html>
