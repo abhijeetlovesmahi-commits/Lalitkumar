@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Imperial Admin Panel | The Lalit International School</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Poppins:wght@300;400;500&display=swap');
+
+    :root {
+      --gold: #D4AF37;
+      --deep-blue: #000c1a;
+      --glass: rgba(255, 255, 255, 0.05);
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: radial-gradient(circle at center, #001f3f 0%, #000c1a 100%);
+      color: white;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+    }
+
+    h1, h2 { font-family: 'Cinzel', serif; color: var(--gold); text-align: center; letter-spacing: 3px; }
+
+    .stats-card {
+      background: var(--glass);
+      border: 1px solid var(--gold);
+      padding: 20px;
+      border-radius: 15px;
+      margin-bottom: 30px;
+      text-align: center;
+      width: 250px;
+    }
+
+    .stats-card span { font-size: 2rem; font-weight: bold; color: white; }
+
+    table {
+      width: 95%;
+      max-width: 1000px;
+      border-collapse: collapse;
+      background: var(--glass);
+      backdrop-filter: blur(10px);
+      border-radius: 15px;
+      overflow: hidden;
+      border: 1px solid rgba(212, 175, 55, 0.3);
+    }
+
+    th { background: rgba(212, 175, 55, 0.2); color: var(--gold); font-family: 'Cinzel'; padding: 15px; text-align: left; }
+    td { padding: 15px; border-bottom: 1px solid rgba(255,255,255,0.05); }
+    tr:hover { background: rgba(255,255,255,0.03); }
+
+    .delete-btn {
+      background: #9b111e;
+      color: white;
+      border: none;
+      padding: 8px 15px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 0.8rem;
+    }
+
+    .delete-btn:hover { background: red; }
+
+    .back-btn {
+      margin-bottom: 20px;
+      color: var(--gold);
+      text-decoration: none;
+      font-family: 'Cinzel';
+      border: 1px solid var(--gold);
+      padding: 5px 15px;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+<body>
+
+  <a href="index.html" class="back-btn">← Back to Portal</a>
+  <h1>Imperial Student Database</h1>
+
+  <div class="stats-card">
+    <p style="margin:0; color:var(--gold);">Total Admissions</p>
+    <span id="totalStudents">0</span>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Class</th>
+        <th>Roll No</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody id="studentTableBody">
+      </tbody>
+  </table>
+
+  <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore-compat.js"></script>
+
+  <script>
+    // Firebase Config (Wahi purana wala)
+    const firebaseConfig = {
+      apiKey: "AIzaSyADzG1BL5PkDvEFDrqopdDY2BNl6jycDkQ",
+      authDomain: "school-management-system-d210c.firebaseapp.com",
+      projectId: "school-management-system-d210c",
+      storageBucket: "school-management-system-d210c.firebasestorage.app",
+      messagingSenderId: "78104585527",
+      appId: "1:78104585527:web:9e25193d63f4d4fd1fe6b2"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+
+    // Data Load Karne Ka Function
+    function loadData() {
+      db.collection("students").orderBy("timestamp", "desc").onSnapshot((querySnapshot) => {
+        const tableBody = document.getElementById("studentTableBody");
+        const totalCount = document.getElementById("totalStudents");
+        tableBody.innerHTML = "";
+        
+        totalCount.innerText = querySnapshot.size;
+
+        querySnapshot.forEach((doc) => {
+          const data = doc.data();
+          tableBody.innerHTML += `
+            <tr>
+              <td>${data.name}</td>
+              <td>${data.class}</td>
+              <td>${data.rollNo}</td>
+              <td><button class="delete-btn" onclick="deleteStudent('${doc.id}')">Delete</button></td>
+            </tr>
+          `;
+        });
+      });
+    }
+
+    // Data Delete Karne Ka Function
+    function deleteStudent(id) {
+      if(confirm("Are you sure you want to remove this record?")) {
+        db.collection("students").doc(id).delete().then(() => {
+          alert("Record Purged from Imperial Database!");
+        });
+      }
+    }
+
+    window.onload = loadData;
+  </script>
+</body>
+</html>
