@@ -2,109 +2,79 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Imperial Admin Panel | The Lalit International School</title>
+  <title>Imperial Admin Dashboard | The Lalit School</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Poppins:wght@300;400;500&display=swap');
+    :root { --gold: #D4AF37; --glass: rgba(255, 255, 255, 0.05); }
+    body { margin: 0; font-family: 'Poppins', sans-serif; background: radial-gradient(circle at center, #001f3f 0%, #000c1a 100%); color: white; padding: 20px; }
+    h1 { font-family: 'Cinzel', serif; color: var(--gold); text-align: center; }
 
-    :root {
-      --gold: #D4AF37;
-      --deep-blue: #000c1a;
-      --glass: rgba(255, 255, 255, 0.05);
-    }
+    /* Filter Section */
+    .controls { display: flex; justify-content: space-between; max-width: 1000px; margin: 20px auto; gap: 10px; }
+    select, input { padding: 10px; border-radius: 5px; background: var(--glass); border: 1px solid var(--gold); color: white; }
 
-    body {
-      margin: 0;
-      font-family: 'Poppins', sans-serif;
-      background: radial-gradient(circle at center, #001f3f 0%, #000c1a 100%);
-      color: white;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 20px;
-    }
+    /* Table Styling */
+    .table-container { overflow-x: auto; width: 100%; max-width: 1100px; margin: auto; }
+    table { width: 100%; border-collapse: collapse; background: var(--glass); backdrop-filter: blur(10px); border: 1px solid rgba(212,175,55,0.3); }
+    th { background: rgba(212, 175, 55, 0.2); color: var(--gold); padding: 12px; text-align: left; font-family: 'Cinzel'; font-size: 0.9rem; }
+    td { padding: 12px; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 0.85rem; }
 
-    h1, h2 { font-family: 'Cinzel', serif; color: var(--gold); text-align: center; letter-spacing: 3px; }
-
-    .stats-card {
-      background: var(--glass);
-      border: 1px solid var(--gold);
-      padding: 20px;
-      border-radius: 15px;
-      margin-bottom: 30px;
-      text-align: center;
-      width: 250px;
-    }
-
-    .stats-card span { font-size: 2rem; font-weight: bold; color: white; }
-
-    table {
-      width: 95%;
-      max-width: 1000px;
-      border-collapse: collapse;
-      background: var(--glass);
-      backdrop-filter: blur(10px);
-      border-radius: 15px;
-      overflow: hidden;
-      border: 1px solid rgba(212, 175, 55, 0.3);
-    }
-
-    th { background: rgba(212, 175, 55, 0.2); color: var(--gold); font-family: 'Cinzel'; padding: 15px; text-align: left; }
-    td { padding: 15px; border-bottom: 1px solid rgba(255,255,255,0.05); }
-    tr:hover { background: rgba(255,255,255,0.03); }
-
-    .delete-btn {
-      background: #9b111e;
-      color: white;
-      border: none;
-      padding: 8px 15px;
-      border-radius: 5px;
-      cursor: pointer;
-      font-size: 0.8rem;
-    }
-
-    .delete-btn:hover { background: red; }
-
-    .back-btn {
-      margin-bottom: 20px;
-      color: var(--gold);
-      text-decoration: none;
-      font-family: 'Cinzel';
-      border: 1px solid var(--gold);
-      padding: 5px 15px;
-      border-radius: 5px;
-    }
+    .btn { cursor: pointer; border: none; padding: 5px 10px; border-radius: 4px; font-weight: bold; margin-right: 5px; }
+    .edit-btn { background: var(--gold); color: black; }
+    .delete-btn { background: #9b111e; color: white; }
+    
+    /* Modal (Edit Popup) */
+    #editModal { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: #001f3f; border: 2px solid var(--gold); padding: 20px; border-radius: 15px; z-index: 100; width: 90%; max-width: 400px; }
+    #editModal input { width: 100%; margin: 5px 0; box-sizing: border-box; }
   </style>
 </head>
 <body>
 
-  <a href="index.html" class="back-btn">← Back to Portal</a>
-  <h1>Imperial Student Database</h1>
+  <h1>Imperial Admin Dashboard</h1>
 
-  <div class="stats-card">
-    <p style="margin:0; color:var(--gold);">Total Admissions</p>
-    <span id="totalStudents">0</span>
+  <div class="controls">
+    <select id="classFilter" onchange="loadData()">
+      <option value="All">All Classes</option>
+      <option value="1">Class 1</option>
+      <option value="10">Class 10</option>
+      </select>
+    <input type="text" id="searchName" placeholder="Search by name..." onkeyup="loadData()">
   </div>
 
-  <table>
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Class</th>
-        <th>Roll No</th>
-        <th>Action</th>
-      </tr>
-    </thead>
-    <tbody id="studentTableBody">
-      </tbody>
-  </table>
+  <div class="table-container">
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Class</th>
+          <th>Roll</th>
+          <th>Father's Name</th>
+          <th>Aadhar</th>
+          <th>Address</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="studentTableBody"></tbody>
+    </table>
+  </div>
+
+  <div id="editModal">
+    <h3 style="color:var(--gold)">Edit Student Details</h3>
+    <input type="hidden" id="editId">
+    <input type="text" id="editName" placeholder="Name">
+    <input type="text" id="editClass" placeholder="Class">
+    <input type="text" id="editRoll" placeholder="Roll">
+    <input type="text" id="editFather" placeholder="Father's Name">
+    <input type="text" id="editAadhar" placeholder="Aadhar Number">
+    <button class="btn edit-btn" onclick="updateStudent()">Update Record</button>
+    <button class="btn" onclick="document.getElementById('editModal').style.display='none'">Cancel</button>
+  </div>
 
   <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore-compat.js"></script>
 
   <script>
-    // Firebase Config (Wahi purana wala)
     const firebaseConfig = {
       apiKey: "AIzaSyADzG1BL5PkDvEFDrqopdDY2BNl6jycDkQ",
       authDomain: "school-management-system-d210c.firebaseapp.com",
@@ -117,36 +87,62 @@
     firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
 
-    // Data Load Karne Ka Function
     function loadData() {
-      db.collection("students").orderBy("timestamp", "desc").onSnapshot((querySnapshot) => {
+      const classVal = document.getElementById('classFilter').value;
+      const searchVal = document.getElementById('searchName').value.toLowerCase();
+      
+      db.collection("students").onSnapshot((querySnapshot) => {
         const tableBody = document.getElementById("studentTableBody");
-        const totalCount = document.getElementById("totalStudents");
         tableBody.innerHTML = "";
-        
-        totalCount.innerText = querySnapshot.size;
 
         querySnapshot.forEach((doc) => {
-          const data = doc.data();
-          tableBody.innerHTML += `
-            <tr>
-              <td>${data.name}</td>
-              <td>${data.class}</td>
-              <td>${data.rollNo}</td>
-              <td><button class="delete-btn" onclick="deleteStudent('${doc.id}')">Delete</button></td>
-            </tr>
-          `;
+          const s = doc.data();
+          // Filter logic
+          if((classVal === "All" || s.class === classVal) && (s.name.toLowerCase().includes(searchVal))) {
+            tableBody.innerHTML += `
+              <tr>
+                <td>${s.name}</td>
+                <td>${s.class}</td>
+                <td>${s.rollNo}</td>
+                <td>${s.father || '-'}</td>
+                <td>${s.aadhar || '-'}</td>
+                <td>${s.address || '-'}</td>
+                <td>
+                  <button class="btn edit-btn" onclick="openEdit('${doc.id}', '${s.name}', '${s.class}', '${s.rollNo}', '${s.father}', '${s.aadhar}')">Edit</button>
+                  <button class="btn delete-btn" onclick="deleteStudent('${doc.id}')">Del</button>
+                </td>
+              </tr>`;
+          }
         });
       });
     }
 
-    // Data Delete Karne Ka Function
+    function openEdit(id, name, cls, roll, fat, aad) {
+      document.getElementById('editModal').style.display = 'block';
+      document.getElementById('editId').value = id;
+      document.getElementById('editName').value = name;
+      document.getElementById('editClass').value = cls;
+      document.getElementById('editRoll').value = roll;
+      document.getElementById('editFather').value = fat || '';
+      document.getElementById('editAadhar').value = aad || '';
+    }
+
+    function updateStudent() {
+      const id = document.getElementById('editId').value;
+      db.collection("students").doc(id).update({
+        name: document.getElementById('editName').value,
+        class: document.getElementById('editClass').value,
+        rollNo: document.getElementById('editRoll').value,
+        father: document.getElementById('editFather').value,
+        aadhar: document.getElementById('editAadhar').value
+      }).then(() => {
+        alert("Updated!");
+        document.getElementById('editModal').style.display = 'none';
+      });
+    }
+
     function deleteStudent(id) {
-      if(confirm("Are you sure you want to remove this record?")) {
-        db.collection("students").doc(id).delete().then(() => {
-          alert("Record Purged from Imperial Database!");
-        });
-      }
+      if(confirm("Confirm Delete?")) db.collection("students").doc(id).delete();
     }
 
     window.onload = loadData;
