@@ -1,181 +1,198 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="hi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Royal School Authentication</title>
+    <title>Royal Excellence Academy - Login</title>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
 
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Poppins:wght@300;400;600&display=swap');
+
         :root {
-            --primary-gold: #D4AF37;
-            --dark-navy: #001f3f;
+            --royal-gold: #D4AF37;
+            --deep-navy: #000c1a;
             --white: #ffffff;
-            --glass: rgba(255, 255, 255, 0.1);
+            --accent-gold: #f1c40f;
         }
 
         body {
             margin: 0;
-            font-family: 'Garamond', serif;
-            background: linear-gradient(135deg, #001f3f 0%, #000c1a 100%);
-            color: var(--white);
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+            background: radial-gradient(circle, #001f3f 0%, #000c1a 100%);
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            overflow: hidden;
+            color: var(--white);
         }
 
-        .main-container {
+        /* Royal Card Container */
+        .auth-card {
             width: 100%;
-            max-width: 450px;
+            max-width: 420px;
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(20px);
             padding: 40px;
-            background: var(--glass);
-            backdrop-filter: blur(15px);
-            border: 1px solid var(--primary-gold);
-            border-radius: 20px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+            border-radius: 30px;
+            border: 2px solid var(--royal-gold);
+            box-shadow: 0 0 30px rgba(212, 175, 55, 0.2);
             text-align: center;
+            position: relative;
         }
 
-        /* School Header Section */
-        .school-header {
+        /* School Logo & Header */
+        .header-section {
             margin-bottom: 30px;
         }
 
         .school-logo {
-            width: 100px;
-            height: 100px;
-            background: var(--primary-gold);
+            width: 120px;
+            height: 120px;
             border-radius: 50%;
-            margin: 0 auto 15px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            font-size: 40px;
-            color: var(--dark-navy);
-            box-shadow: 0 0 20px rgba(212, 175, 55, 0.4);
+            border: 3px solid var(--royal-gold);
+            padding: 5px;
+            background: white;
+            box-shadow: 0 0 20px var(--royal-gold);
+            margin-bottom: 15px;
         }
 
         .school-name {
-            font-size: 1.8rem;
-            color: var(--primary-gold);
+            font-family: 'Cinzel', serif;
+            font-size: 1.6rem;
+            color: var(--royal-gold);
             text-transform: uppercase;
-            letter-spacing: 3px;
+            letter-spacing: 2px;
             margin: 0;
         }
 
-        /* Form Styling */
-        h2 { margin-bottom: 25px; font-weight: 300; letter-spacing: 1px; }
+        h2 {
+            font-weight: 300;
+            margin-top: 10px;
+            font-size: 1.1rem;
+            letter-spacing: 1px;
+            color: #ccc;
+        }
 
+        /* Form Inputs */
         .form-group {
             margin-bottom: 20px;
             text-align: left;
         }
 
-        label {
+        .form-group label {
             display: block;
             margin-bottom: 8px;
-            color: var(--primary-gold);
-            font-size: 0.9rem;
+            font-size: 0.85rem;
+            color: var(--royal-gold);
+            margin-left: 5px;
         }
 
         input {
             width: 100%;
-            padding: 12px;
-            background: rgba(255,255,255,0.05);
+            padding: 14px 18px;
+            background: rgba(255, 255, 255, 0.07);
             border: 1px solid rgba(212, 175, 55, 0.3);
-            border-radius: 8px;
+            border-radius: 12px;
             color: white;
             outline: none;
             box-sizing: border-box;
             transition: 0.3s;
+            font-size: 1rem;
         }
 
         input:focus {
-            border-color: var(--primary-gold);
-            background: rgba(255,255,255,0.1);
+            border-color: var(--royal-gold);
+            background: rgba(255, 255, 255, 0.12);
+            box-shadow: 0 0 10px rgba(212, 175, 55, 0.2);
         }
 
-        .btn {
+        /* Royal Button */
+        .royal-btn {
             width: 100%;
-            padding: 14px;
-            background: var(--primary-gold);
+            padding: 15px;
+            background: linear-gradient(45deg, #B8860B, #D4AF37, #FFD700);
             border: none;
-            border-radius: 8px;
-            color: var(--dark-navy);
-            font-weight: bold;
+            border-radius: 12px;
+            color: #000;
+            font-weight: 700;
             font-size: 1rem;
             cursor: pointer;
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 2px;
             transition: 0.4s;
             margin-top: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
         }
 
-        .btn:hover {
-            background: #f1c40f;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(212, 175, 55, 0.4);
+        .royal-btn:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 8px 25px rgba(212, 175, 55, 0.5);
         }
 
-        .toggle-link {
-            margin-top: 20px;
+        /* Links */
+        .footer-links {
+            margin-top: 25px;
             font-size: 0.9rem;
-            color: #ccc;
+            color: #bbb;
         }
 
-        .toggle-link a {
-            color: var(--primary-gold);
+        .footer-links a {
+            color: var(--royal-gold);
             text-decoration: none;
+            font-weight: 600;
         }
+
+        .footer-links a:hover {
+            text-decoration: underline;
+        }
+
     </style>
 </head>
 <body>
 
-<div class="main-container">
-    <div class="school-header">
-        <div class="school-logo">RS</div>
-        <h1 class="school-name">Royal Excellence Academy</h1>
+<div class="auth-card">
+    <div class="header-section">
+        <img src="logo.png" alt="School Logo" class="school-logo">
+        <h1 class="school-name">Lalit Kumar Academy</h1>
+        <h2>Student Access Portal</h2>
     </div>
 
     <div id="login-view">
-        <h2>Member Portal</h2>
         <div class="form-group">
-            <label>Academic Email</label>
-            <input type="email" id="login-email" placeholder="email@school.com">
+            <label>Registration Email</label>
+            <input type="email" id="login-email" placeholder="Apna email dalein">
         </div>
         <div class="form-group">
             <label>Secret Password</label>
             <input type="password" id="login-password" placeholder="••••••••">
         </div>
-        <button class="btn" onclick="handleLogin()">Enter Gates</button>
-        <p class="toggle-link">New student? <a href="#" onclick="toggleView('signup')">Apply for Admission</a></p>
+        <button class="royal-btn" onclick="handleLogin()">Enter Dashboard</button>
+        <p class="footer-links">New Student? <a href="#" onclick="toggleView('signup')">Apply Now</a></p>
     </div>
 
     <div id="signup-view" style="display: none;">
-        <h2>Registration</h2>
         <div class="form-group">
             <label>Full Name</label>
-            <input type="text" id="signup-name" placeholder="Your Name">
+            <input type="text" id="signup-name" placeholder="Apna pura naam">
         </div>
         <div class="form-group">
-            <label>Academic Email</label>
-            <input type="email" id="signup-email" placeholder="email@school.com">
+            <label>Email Address</label>
+            <input type="email" id="signup-email" placeholder="example@mail.com">
         </div>
         <div class="form-group">
-            <label>Set Password</label>
+            <label>Create Password</label>
             <input type="password" id="signup-password" placeholder="••••••••">
         </div>
-        <button class="btn" onclick="handleSignup()">Register Now</button>
-        <p class="toggle-link">Already a member? <a href="#" onclick="toggleView('login')">Return to Login</a></p>
+        <button class="royal-btn" onclick="handleSignup()">Register Account</button>
+        <p class="footer-links">Already registered? <a href="#" onclick="toggleView('login')">Go to Login</a></p>
     </div>
 </div>
 
 <script>
-    // Firebase Config
+    // Firebase Config (Aapka diya hua)
     const firebaseConfig = {
         apiKey: "AIzaSyCnqD4oBsQP5XGJ4C2GGANrvLeeYB6Syhc",
         authDomain: "github-site-authenticati-905f6.firebaseapp.com",
@@ -188,38 +205,32 @@
     firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
 
-    // Toggle Function
     function toggleView(view) {
         document.getElementById('login-view').style.display = view === 'login' ? 'block' : 'none';
         document.getElementById('signup-view').style.display = view === 'signup' ? 'block' : 'none';
     }
 
-    // Login Logic
     async function handleLogin() {
         const email = document.getElementById('login-email').value;
         const pass = document.getElementById('login-password').value;
-        
         try {
             await auth.signInWithEmailAndPassword(email, pass);
-            alert("Welcome to the Royal Court!");
-            // Redirecting to Dashboard
+            // Login ke baad Dashboard par redirect
             window.location.href = "regal-scholar-dashboard.html";
         } catch (error) {
-            alert("Access Denied: " + error.message);
+            alert("Aapka Access fail ho gaya: " + error.message);
         }
     }
 
-    // Signup Logic
     async function handleSignup() {
         const email = document.getElementById('signup-email').value;
         const pass = document.getElementById('signup-password').value;
-        
         try {
             await auth.createUserWithEmailAndPassword(email, pass);
-            alert("Admission Successful!");
+            alert("Account ban gaya! Dashboard khul raha hai...");
             window.location.href = "regal-scholar-dashboard.html";
         } catch (error) {
-            alert("Registration Failed: " + error.message);
+            alert("Signup mein error hai: " + error.message);
         }
     }
 </script>
