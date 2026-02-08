@@ -1,86 +1,194 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admissions | The Lalit International School</title>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Poppins:wght@300;400&display=swap');
+  <meta charset="UTF-8">
+  <title>Student Admission | The Lalit International School</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Poppins:wght@300;400;500&display=swap');
 
-        body {
-            margin: 0;
-            font-family: 'Poppins', sans-serif;
-            background: #000c1a;
-            color: white;
-            padding: 20px;
-        }
+    :root {
+      --gold: #D4AF37;
+      --deep-blue: #000c1a;
+      --glass: rgba(255, 255, 255, 0.05);
+    }
 
-        .admission-container {
-            max-width: 600px;
-            margin: 50px auto;
-            background: rgba(255, 255, 255, 0.05);
-            padding: 40px;
-            border-radius: 20px;
-            border: 2px solid #D4AF37;
-            box-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
-        }
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Poppins', sans-serif;
+      background: radial-gradient(circle at center, #001f3f 0%, #000c1a 100%);
+      color: white;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
 
-        h1 { font-family: 'Cinzel', serif; color: #D4AF37; text-align: center; }
+    .royal-header { text-align: center; padding: 40px 20px; }
+    .royal-header h1 { font-family: 'Cinzel', serif; font-size: 2rem; color: var(--gold); letter-spacing: 3px; margin: 0; }
 
-        .form-group { margin-bottom: 20px; }
-        label { display: block; color: #D4AF37; margin-bottom: 5px; }
-        
-        input, select {
-            width: 100%;
-            padding: 12px;
-            border-radius: 8px;
-            border: 1px solid #D4AF37;
-            background: rgba(0,0,0,0.5);
-            color: white;
-            box-sizing: border-box;
-        }
+    /* Admission Form Container */
+    .form-wrapper {
+      width: 90%;
+      max-width: 700px;
+      background: var(--glass);
+      backdrop-filter: blur(15px);
+      border: 1px solid var(--gold);
+      border-radius: 20px;
+      padding: 30px;
+      margin-bottom: 50px;
+      box-shadow: 0 0 30px rgba(0,0,0,0.5);
+    }
 
-        .submit-btn {
-            width: 100%;
-            padding: 15px;
-            background: #D4AF37;
-            border: none;
-            color: #000;
-            font-weight: bold;
-            text-transform: uppercase;
-            cursor: pointer;
-            border-radius: 8px;
-            transition: 0.3s;
-        }
+    .form-wrapper h2 {
+      font-family: 'Cinzel', serif;
+      color: var(--gold);
+      text-align: center;
+      margin-bottom: 30px;
+      border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+      padding-bottom: 10px;
+    }
 
-        .submit-btn:hover { background: #fff; transform: scale(1.02); }
-        .back-link { text-align: center; margin-top: 20px; }
-        .back-link a { color: #D4AF37; text-decoration: none; }
-    </style>
+    .input-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 15px;
+    }
+
+    .input-group { margin-bottom: 15px; }
+    .input-group label { display: block; color: var(--gold); font-size: 0.8rem; margin-bottom: 5px; font-family: 'Cinzel'; }
+    
+    input {
+      width: 100%;
+      padding: 12px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(212, 175, 55, 0.3);
+      border-radius: 8px;
+      color: white;
+      outline: none;
+      box-sizing: border-box;
+      transition: 0.3s;
+    }
+
+    input:focus { border-color: var(--gold); background: rgba(255, 255, 255, 0.1); }
+
+    .btn-submit {
+      width: 100%;
+      padding: 15px;
+      background: var(--gold);
+      color: black;
+      border: none;
+      border-radius: 10px;
+      font-weight: bold;
+      font-family: 'Cinzel', serif;
+      cursor: pointer;
+      font-size: 1.1rem;
+      margin-top: 20px;
+      transition: 0.4s;
+    }
+
+    .btn-submit:hover { background: white; transform: translateY(-3px); box-shadow: 0 10px 20px rgba(0,0,0,0.4); }
+
+    .back-link { margin-top: 20px; color: #ccc; text-decoration: none; font-size: 0.9rem; }
+    .back-link:hover { color: var(--gold); }
+  </style>
 </head>
 <body>
-    <div class="admission-container">
-        <h1>Admission Inquiry</h1>
-        <form>
-            <div class="form-group">
-                <label>Student Full Name</label>
-                <input type="text" placeholder="Enter name">
-            </div>
-            <div class="form-group">
-                <label>Applying for Class</label>
-                <select>
-                    <option>Grade 1 to 5</option>
-                    <option>Grade 6 to 10</option>
-                    <option>Grade 11 & 12</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label>Parent's Contact</label>
-                <input type="tel" placeholder="+91 0000000000">
-            </div>
-            <button type="button" class="submit-btn" onclick="alert('Inquiry Sent to the Royal Office!')">Submit Application</button>
-        </form>
-        <div class="back-link"><a href="index.html">← Back to Palace Home</a></div>
+
+<header class="royal-header">
+  <h1>The Lalit International School</h1>
+</header>
+
+<div class="form-wrapper">
+  <h2>Student Admission Form</h2>
+  
+  <div class="input-grid">
+    <div class="input-group">
+      <label>Student Full Name</label>
+      <input type="text" id="stuName" placeholder="Enter Full Name">
     </div>
+    <div class="input-group">
+      <label>Class for Admission</label>
+      <input type="text" id="stuClass" placeholder="e.g. 10th-A">
+    </div>
+    <div class="input-group">
+      <label>Roll Number</label>
+      <input type="number" id="stuRoll" placeholder="Assign Roll No.">
+    </div>
+    <div class="input-group">
+      <label>Father's Name</label>
+      <input type="text" id="stuFather" placeholder="Father's Full Name">
+    </div>
+    <div class="input-group">
+      <label>Mother's Name</label>
+      <input type="text" id="stuMother" placeholder="Mother's Full Name">
+    </div>
+    <div class="input-group">
+      <label>Aadhar Number</label>
+      <input type="number" id="stuAadhar" placeholder="12 Digit Aadhar">
+    </div>
+  </div>
+
+  <div class="input-group">
+    <label>Full Address</label>
+    <input type="text" id="stuAddress" placeholder="Vill, Post, Dist, Pin Code">
+  </div>
+
+  <button class="btn-submit" onclick="saveToFirebase()">SUBMIT ADMISSION</button>
+  
+  <center><a href="index.html" class="back-link">Return to Home Portal</a></center>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore-compat.js"></script>
+
+<script>
+  // Firebase Configuration
+  const firebaseConfig = {
+    apiKey: "AIzaSyADzG1BL5PkDvEFDrqopdDY2BNl6jycDkQ",
+    authDomain: "school-management-system-d210c.firebaseapp.com",
+    projectId: "school-management-system-d210c",
+    storageBucket: "school-management-system-d210c.firebasestorage.app",
+    messagingSenderId: "78104585527",
+    appId: "1:78104585527:web:9e25193d63f4d4fd1fe6b2"
+  };
+
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.firestore();
+
+  function saveToFirebase() {
+    const data = {
+      name: document.getElementById('stuName').value,
+      class: document.getElementById('stuClass').value,
+      rollNo: document.getElementById('stuRoll').value,
+      father: document.getElementById('stuFather').value,
+      mother: document.getElementById('stuMother').value,
+      aadhar: document.getElementById('stuAadhar').value,
+      address: document.getElementById('stuAddress').value,
+      timestamp: firebase.firestore.FieldValue.serverTimestamp()
+    };
+
+    // Validation
+    if(!data.name || !data.class || !data.rollNo) {
+      alert("Lalit Sir, please fill mandatory fields (Name, Class, Roll)!");
+      return;
+    }
+
+    db.collection("students").add(data)
+      .then(() => {
+        alert("Success! Student record added to Imperial Database. ✅");
+        // Form Clear karein
+        document.querySelectorAll('input').forEach(input => input.value = "");
+      })
+      .catch((error) => {
+        console.error("Error: ", error);
+        alert("Connection Error. Please try again.");
+      });
+  }
+</script>
+
 </body>
 </html>
