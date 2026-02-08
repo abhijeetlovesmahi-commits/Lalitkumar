@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>School Admission Form</title>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #f4f4f9; padding: 20px; }
+        .container { max-width: 500px; margin: auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+        h2 { text-align: center; color: #333; }
+        input, select, button { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; }
+        button { background-color: #28a745; color: white; border: none; cursor: pointer; font-size: 16px; }
+        button:hover { background-color: #218838; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Student Admission Form</h2>
+    <form id="admissionForm">
+        <input type="text" id="studentName" placeholder="Student Full Name" required>
+        <input type="email" id="email" placeholder="Parent's Email" required>
+        <input type="date" id="dob" required>
+        <select id="classApplied">
+            <option value="">Select Class</option>
+            <option value="1">Class 1</option>
+            <option value="2">Class 2</option>
+            <option value="3">Class 3</option>
+            <option value="4">Class 4</option>
+            <option value="5">Class 5</option>
+        </select>
+        <input type="tel" id="phone" placeholder="Contact Number" required>
+        <button type="submit" id="submitBtn">Submit Admission</button>
+    </form>
+</div>
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+    // Aapka Firebase Config
+    const firebaseConfig = {
+        apiKey: "AIzaSyADzG1BL5PkDvEFDrqopdDY2BNl6jycDkQ",
+        authDomain: "school-management-system-d210c.firebaseapp.com",
+        projectId: "school-management-system-d210c",
+        storageBucket: "school-management-system-d210c.firebasestorage.app",
+        messagingSenderId: "78104585527",
+        appId: "1:78104585527:web:9e25193d63f4d4fd1fe6b2"
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    // Form Submission Logic
+    const form = document.getElementById('admissionForm');
+
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const studentData = {
+            name: document.getElementById('studentName').value,
+            email: document.getElementById('email').value,
+            dob: document.getElementById('dob').value,
+            class: document.getElementById('classApplied').value,
+            phone: document.getElementById('phone').value,
+            submissionDate: new Date()
+        };
+
+        try {
+            // "students" naam ke collection mein data save hoga
+            const docRef = await addDoc(collection(db, "admissions"), studentData);
+            alert("Admission Form Submitted Successfully! ID: " + docRef.id);
+            form.reset();
+        } catch (error) {
+            console.error("Error adding document: ", error);
+            alert("Error submitting form. Check console.");
+        }
+    });
+</script>
+
+</body>
+</html>
