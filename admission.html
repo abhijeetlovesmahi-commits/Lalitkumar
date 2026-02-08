@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admissions | The Lalit International School</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Poppins:wght@300;400&display=swap');
+
+        body {
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            background: #000c1a;
+            color: white;
+            padding: 20px;
+        }
+
+        .admission-container {
+            max-width: 600px;
+            margin: 50px auto;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 40px;
+            border-radius: 20px;
+            border: 2px solid #D4AF37;
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
+        }
+
+        h1 { font-family: 'Cinzel', serif; color: #D4AF37; text-align: center; }
+
+        .form-group { margin-bottom: 20px; }
+        label { display: block; color: #D4AF37; margin-bottom: 5px; }
+        
+        input, select {
+            width: 100%;
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid #D4AF37;
+            background: rgba(0,0,0,0.5);
+            color: white;
+            box-sizing: border-box;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 15px;
+            background: #D4AF37;
+            border: none;
+            color: #000;
+            font-weight: bold;
+            text-transform: uppercase;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: 0.3s;
+        }
+
+        .submit-btn:hover { background: #fff; transform: scale(1.02); }
+        .back-link { text-align: center; margin-top: 20px; }
+        .back-link a { color: #D4AF37; text-decoration: none; }
+    </style>
+</head>
+<body>
+    <div class="admission-container">
+        <h1>Admission Inquiry</h1>
+        <form>
+            <div class="form-group">
+                <label>Student Full Name</label>
+                <input type="text" placeholder="Enter name">
+            </div>
+            <div class="form-group">
+                <label>Applying for Class</label>
+                <select>
+                    <option>Grade 1 to 5</option>
+                    <option>Grade 6 to 10</option>
+                    <option>Grade 11 & 12</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Parent's Contact</label>
+                <input type="tel" placeholder="+91 0000000000">
+            </div>
+            <button type="button" class="submit-btn" onclick="alert('Inquiry Sent to the Royal Office!')">Submit Application</button>
+        </form>
+        <div class="back-link"><a href="index.html">← Back to Palace Home</a></div>
+    </div>
+</body>
+</html>
