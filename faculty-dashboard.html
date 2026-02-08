@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Faculty Command Center | LIS</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Poppins:wght@300;400;600&display=swap');
+
+        body {
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            background: #f0f2f5;
+            display: flex;
+        }
+
+        /* Sidebar - Faculty Theme (Deep Maroon & Gold) */
+        .sidebar {
+            width: 260px;
+            height: 100vh;
+            background: #4a0404; /* Deep Royal Maroon */
+            color: white;
+            padding: 25px;
+            position: fixed;
+            border-right: 4px solid #D4AF37;
+        }
+
+        .sidebar h2 {
+            font-family: 'Cinzel', serif;
+            color: #D4AF37;
+            text-align: center;
+            font-size: 1.1rem;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+            padding-bottom: 15px;
+        }
+
+        .nav-link {
+            padding: 15px;
+            margin: 10px 0;
+            cursor: pointer;
+            border-radius: 10px;
+            transition: 0.3s;
+            display: block;
+            color: #eee;
+            text-decoration: none;
+        }
+
+        .nav-link:hover {
+            background: #D4AF37;
+            color: #4a0404;
+            font-weight: bold;
+        }
+
+        /* Main Content Area */
+        .main-area {
+            margin-left: 310px;
+            padding: 40px;
+            width: calc(100% - 350px);
+        }
+
+        .faculty-header {
+            background: white;
+            padding: 20px 40px;
+            border-radius: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+            border-left: 8px solid #D4AF37;
+        }
+
+        .faculty-header h1 { font-family: 'Cinzel'; font-size: 1.5rem; color: #4a0404; }
+
+        /* Action Cards */
+        .action-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+
+        .action-card {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            text-align: center;
+            border-bottom: 4px solid #4a0404;
+        }
+
+        .action-card h3 { color: #555; margin-bottom: 15px; }
+        
+        .action-btn {
+            background: #D4AF37;
+            color: #000;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        /* Student List Table */
+        .data-table {
+            width: 100%;
+            margin-top: 40px;
+            background: white;
+            border-collapse: collapse;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+
+        .data-table th { background: #4a0404; color: #D4AF37; padding: 15px; text-align: left; }
+        .data-table td { padding: 15px; border-bottom: 1px solid #eee; }
+
+        .logout-btn {
+            background: #000;
+            color: #D4AF37;
+            padding: 10px 25px;
+            border: 2px solid #D4AF37;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .logout-btn:hover { background: #D4AF37; color: #000; }
+
+    </style>
+</head>
+<body>
+
+    <div class="sidebar">
+        <h2>Faculty Portal</h2>
+        <nav style="margin-top: 30px;">
+            <a class="nav-link">Dashboard Home</a>
+            <a class="nav-link">Class Attendance</a>
+            <a class="nav-link">Upload Marks</a>
+            <a class="nav-link">Notice Board</a>
+            <a class="nav-link">Leave Application</a>
+        </nav>
+    </div>
+
+    <div class="main-area">
+        <div class="faculty-header">
+            <h1>Imperial Faculty Dashboard</h1>
+            <button class="logout-btn" onclick="window.location.href='login.html'">Logout</button>
+        </div>
+
+        <div class="action-grid">
+            <div class="action-card">
+                <h3>Total Students</h3>
+                <p style="font-size: 2rem; color: #4a0404; font-weight: bold;">1,240</p>
+                <button class="action-btn">View All</button>
+            </div>
+            <div class="action-card">
+                <h3>Attendance Marked</h3>
+                <p style="font-size: 2rem; color: #046307; font-weight: bold;">Yes</p>
+                <button class="action-btn">Edit Today</button>
+            </div>
+            <div class="action-card">
+                <h3>New Notifications</h3>
+                <p style="font-size: 2rem; color: #9b111e; font-weight: bold;">05</p>
+                <button class="action-btn">Read Now</button>
+            </div>
+        </div>
+
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Roll No</th>
+                    <th>Student Name</th>
+                    <th>Grade</th>
+                    <th>Last Exam %</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>101</td>
+                    <td>Aditya Vardhan</td>
+                    <td>XII-A</td>
+                    <td>94%</td>
+                    <td style="color: green;">Active</td>
+                </tr>
+                <tr>
+                    <td>102</td>
+                    <td>Meera Rajput</td>
+                    <td>XII-A</td>
+                    <td>88%</td>
+                    <td style="color: green;">Active</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+</body>
+</html>
