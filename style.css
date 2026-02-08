@@ -1,14 +1,20 @@
 body{
   margin:0;
-  background:radial-gradient(circle,#1a1a1a,#000);
-  color:#f5e6c8;
-  font-family:Georgia, serif;
+  background:
+    radial-gradient(circle at top,
+      #fff8e6 0%,
+      #f3e3b8 40%,
+      #d6b86a 75%,
+      #b08d3c 100%);
+  color:#3a2a00;
+  font-family: "Georgia", serif;
   text-align:center;
 }
 
+/* HEADER */
 .royal-header{
-  padding:40px 20px;
-  border-bottom:2px solid gold;
+  padding:50px 20px;
+  border-bottom:2px solid #c9a24d;
 }
 
 .royal-logo{
@@ -16,46 +22,65 @@ body{
   filter:drop-shadow(0 0 12px gold);
 }
 
-h1{
-  font-size:40px;
+.royal-header h1{
+  font-size:42px;
   letter-spacing:2px;
+  margin:20px 0 10px;
 }
 
-.news{
-  background:linear-gradient(to right,#3b2f00,#ffd700,#3b2f00);
-  color:black;
+.royal-header p{
+  color:#7a5a00;
+  font-style:italic;
+}
+
+/* NEWS */
+.royal-news{
+  background:linear-gradient(to right,#6b4e00,#ffd700,#6b4e00);
+  color:#000;
   font-weight:bold;
-  padding:10px;
+  padding:14px;
+  font-size:16px;
 }
 
-.menu{
+/* GEM SECTION */
+.gem-section{
   display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-  gap:25px;
-  padding:50px;
+  grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+  gap:30px;
+  padding:70px 40px;
 }
 
 .gem{
-  padding:20px;
-  text-decoration:none;
-  color:white;
+  padding:22px;
   font-size:20px;
-  border-radius:16px;
-  box-shadow:0 10px 25px rgba(0,0,0,0.7);
-  transition:0.3s;
+  text-decoration:none;
+  border-radius:18px;
+  font-family:Georgia, serif;
+  letter-spacing:1px;
+  box-shadow:
+    inset 0 2px 6px rgba(255,255,255,0.5),
+    0 10px 25px rgba(0,0,0,0.25);
+  transition:0.4s ease;
 }
 
 .gem:hover{
-  transform:scale(1.05);
+  transform:translateY(-6px) scale(1.03);
+  box-shadow:
+    0 0 20px rgba(255,215,0,0.9),
+    0 0 40px rgba(255,215,0,0.6);
 }
 
-.ruby{background:linear-gradient(145deg,#5a0000,#c40000);}
-.emerald{background:linear-gradient(145deg,#003b2f,#00a86b);}
-.sapphire{background:linear-gradient(145deg,#001c3d,#0047ab);}
-.gold{background:linear-gradient(145deg,#6b4e00,#ffd700); color:black;}
+/* GEM COLORS */
+.ruby{background:linear-gradient(145deg,#7a0000,#d40000);color:#fff;}
+.emerald{background:linear-gradient(145deg,#004b3a,#00b37a);color:#fff;}
+.sapphire{background:linear-gradient(145deg,#002b5c,#0057c7);color:#fff;}
+.amethyst{background:linear-gradient(145deg,#3a005c,#8a4fcf);color:#fff;}
+.gold{background:linear-gradient(145deg,#7a5a00,#ffd700);color:#000;}
 
-footer{
-  padding:20px;
-  border-top:1px solid gold;
-  color:#d4b56d;
+/* FOOTER */
+.royal-footer{
+  border-top:1px solid #c9a24d;
+  padding:30px;
+  font-size:14px;
+  color:#6b4e00;
 }
