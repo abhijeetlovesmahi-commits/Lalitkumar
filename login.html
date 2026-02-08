@@ -1,100 +1,227 @@
 <!DOCTYPE html>
-<html lang="hi">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Asli Login Page</title>
+    <title>Royal School Authentication</title>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+
     <style>
-        body { font-family: 'Segoe UI', sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; background: #eef2f3; margin: 0; }
-        .box { background: white; padding: 30px; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); width: 320px; text-align: center; }
-        h2 { color: #333; margin-bottom: 20px; }
-        input { width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; outline: none; }
-        button { width: 100%; padding: 12px; cursor: pointer; border-radius: 8px; font-weight: bold; margin-top: 10px; border: none; transition: 0.3s; }
-        .btn-login { background: #28a745; color: white; }
-        .btn-login:hover { background: #218838; }
-        .btn-signup { background: #007bff; color: white; }
-        .btn-signup:hover { background: #0069d9; }
-        #status { margin-top: 15px; font-size: 13px; font-weight: bold; }
-        .success { color: green; }
-        .error { color: red; }
+        :root {
+            --primary-gold: #D4AF37;
+            --dark-navy: #001f3f;
+            --white: #ffffff;
+            --glass: rgba(255, 255, 255, 0.1);
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Garamond', serif;
+            background: linear-gradient(135deg, #001f3f 0%, #000c1a 100%);
+            color: var(--white);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        .main-container {
+            width: 100%;
+            max-width: 450px;
+            padding: 40px;
+            background: var(--glass);
+            backdrop-filter: blur(15px);
+            border: 1px solid var(--primary-gold);
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+            text-align: center;
+        }
+
+        /* School Header Section */
+        .school-header {
+            margin-bottom: 30px;
+        }
+
+        .school-logo {
+            width: 100px;
+            height: 100px;
+            background: var(--primary-gold);
+            border-radius: 50%;
+            margin: 0 auto 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 40px;
+            color: var(--dark-navy);
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.4);
+        }
+
+        .school-name {
+            font-size: 1.8rem;
+            color: var(--primary-gold);
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin: 0;
+        }
+
+        /* Form Styling */
+        h2 { margin-bottom: 25px; font-weight: 300; letter-spacing: 1px; }
+
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--primary-gold);
+            font-size: 0.9rem;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 8px;
+            color: white;
+            outline: none;
+            box-sizing: border-box;
+            transition: 0.3s;
+        }
+
+        input:focus {
+            border-color: var(--primary-gold);
+            background: rgba(255,255,255,0.1);
+        }
+
+        .btn {
+            width: 100%;
+            padding: 14px;
+            background: var(--primary-gold);
+            border: none;
+            border-radius: 8px;
+            color: var(--dark-navy);
+            font-weight: bold;
+            font-size: 1rem;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: 0.4s;
+            margin-top: 10px;
+        }
+
+        .btn:hover {
+            background: #f1c40f;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(212, 175, 55, 0.4);
+        }
+
+        .toggle-link {
+            margin-top: 20px;
+            font-size: 0.9rem;
+            color: #ccc;
+        }
+
+        .toggle-link a {
+            color: var(--primary-gold);
+            text-decoration: none;
+        }
     </style>
 </head>
 <body>
 
-<div class="box">
-    <img src="image.jpg" alt="Logo" style="width: 70px; height: 70px; border-radius: 50%; object-fit: cover; margin-bottom: 10px; border: 2px solid #007bff;">
-    
-    <h2>Welcome Back</h2>
-    <input type="email" id="email" placeholder="Apni Email Daalein">
-    <input type="password" id="pass" placeholder="6+ Digit Password">
-    
-    <button class="btn-login" onclick="login()">Log In</button>
-    <button class="btn-signup" onclick="signup()">Naya Account Banayein</button>
-    
-    <p id="status"></p>
+<div class="main-container">
+    <div class="school-header">
+        <div class="school-logo">RS</div>
+        <h1 class="school-name">Royal Excellence Academy</h1>
+    </div>
+
+    <div id="login-view">
+        <h2>Member Portal</h2>
+        <div class="form-group">
+            <label>Academic Email</label>
+            <input type="email" id="login-email" placeholder="email@school.com">
+        </div>
+        <div class="form-group">
+            <label>Secret Password</label>
+            <input type="password" id="login-password" placeholder="••••••••">
+        </div>
+        <button class="btn" onclick="handleLogin()">Enter Gates</button>
+        <p class="toggle-link">New student? <a href="#" onclick="toggleView('signup')">Apply for Admission</a></p>
+    </div>
+
+    <div id="signup-view" style="display: none;">
+        <h2>Registration</h2>
+        <div class="form-group">
+            <label>Full Name</label>
+            <input type="text" id="signup-name" placeholder="Your Name">
+        </div>
+        <div class="form-group">
+            <label>Academic Email</label>
+            <input type="email" id="signup-email" placeholder="email@school.com">
+        </div>
+        <div class="form-group">
+            <label>Set Password</label>
+            <input type="password" id="signup-password" placeholder="••••••••">
+        </div>
+        <button class="btn" onclick="handleSignup()">Register Now</button>
+        <p class="toggle-link">Already a member? <a href="#" onclick="toggleView('login')">Return to Login</a></p>
+    </div>
 </div>
 
-<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
-
 <script>
-  // Aapka Config Code
-  const firebaseConfig = {
-    apiKey: "AIzaSyCnqD4oBsQP5XGJ4C2GGANrvLeeYB6Syhc",
-    authDomain: "github-site-authenticati-905f6.firebaseapp.com",
-    projectId: "github-site-authenticati-905f6",
-    storageBucket: "github-site-authenticati-905f6.firebasestorage.app",
-    messagingSenderId: "1032763620882",
-    appId: "1:1032763620882:web:c2492c7882114136d5a2cb",
-    measurementId: "G-K1B6J68BMZ"
-  };
+    // Firebase Config
+    const firebaseConfig = {
+        apiKey: "AIzaSyCnqD4oBsQP5XGJ4C2GGANrvLeeYB6Syhc",
+        authDomain: "github-site-authenticati-905f6.firebaseapp.com",
+        projectId: "github-site-authenticati-905f6",
+        storageBucket: "github-site-authenticati-905f6.firebasestorage.app",
+        messagingSenderId: "1032763620882",
+        appId: "1:1032763620882:web:c2492c7882114136d5a2cb"
+    };
 
-  // Firebase ko chalu karein
-  if (!firebase.apps.length) {
-      firebase.initializeApp(firebaseConfig);
-  }
-  const auth = firebase.auth();
-  const statusPara = document.getElementById('status');
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
 
-  // Naya Account Banane ka Function
-  function signup() {
-    const email = document.getElementById('email').value;
-    const pass = document.getElementById('pass').value;
+    // Toggle Function
+    function toggleView(view) {
+        document.getElementById('login-view').style.display = view === 'login' ? 'block' : 'none';
+        document.getElementById('signup-view').style.display = view === 'signup' ? 'block' : 'none';
+    }
 
-    statusPara.innerHTML = "Checking...";
-    statusPara.className = "";
+    // Login Logic
+    async function handleLogin() {
+        const email = document.getElementById('login-email').value;
+        const pass = document.getElementById('login-password').value;
+        
+        try {
+            await auth.signInWithEmailAndPassword(email, pass);
+            alert("Welcome to the Royal Court!");
+            // Redirecting to Dashboard
+            window.location.href = "regal-scholar-dashboard.html";
+        } catch (error) {
+            alert("Access Denied: " + error.message);
+        }
+    }
 
-    auth.createUserWithEmailAndPassword(email, pass)
-      .then((userCredential) => {
-        statusPara.innerHTML = "Shabash! Account ban gaya.";
-        statusPara.className = "success";
-        alert("Account Successfully Created!");
-      })
-      .catch((error) => {
-        statusPara.innerHTML = "Error: " + error.message;
-        statusPara.className = "error";
-      });
-  }
-
-  // Login karne ka Function
-  function login() {
-    const email = document.getElementById('email').value;
-    const pass = document.getElementById('pass').value;
-
-    statusPara.innerHTML = "Logging in...";
-    statusPara.className = "";
-
-    auth.signInWithEmailAndPassword(email, pass)
-      .then((userCredential) => {
-        statusPara.innerHTML = "Login Sahi Hai! Wait karein...";
-        statusPara.className = "success";
-        window.location.href = "index.html"; 
-      })
-      .catch((error) => {
-        statusPara.innerHTML = "Ghalat Email ya Password!";
-        statusPara.className = "error";
-      });
-  }
+    // Signup Logic
+    async function handleSignup() {
+        const email = document.getElementById('signup-email').value;
+        const pass = document.getElementById('signup-password').value;
+        
+        try {
+            await auth.createUserWithEmailAndPassword(email, pass);
+            alert("Admission Successful!");
+            window.location.href = "regal-scholar-dashboard.html";
+        } catch (error) {
+            alert("Registration Failed: " + error.message);
+        }
+    }
 </script>
 
 </body>
