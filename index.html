@@ -30,35 +30,160 @@
       align-items: center;
     }
 
-    .royal-header { text-align: center; padding: 50px 20px 30px; }
-    .royal-logo { width: 140px; height: 140px; border-radius: 50%; border: 3px solid var(--gold); padding: 8px; background: white; box-shadow: 0 0 30px rgba(212, 175, 55, 0.4); margin-bottom: 20px; transition: transform 0.5s; }
-    .royal-logo:hover { transform: rotateY(180deg); }
-    .royal-header h1 { font-family: 'Cinzel', serif; font-size: 2.5rem; color: var(--gold); margin: 0; letter-spacing: 4px; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); }
-    .royal-header p { font-size: 1.1rem; letter-spacing: 5px; color: #ccc; text-transform: uppercase; margin-top: 10px; }
+    /* Header Section */
+    .royal-header {
+      text-align: center;
+      padding: 50px 20px 30px;
+      animation: fadeIn 1.5s ease-in;
+    }
 
-    .royal-news { width: 100%; background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.2), transparent); padding: 10px 0; border-top: 1px solid var(--gold); border-bottom: 1px solid var(--gold); margin-bottom: 40px; text-align: center; font-family: 'Cinzel', serif; color: var(--gold); overflow: hidden; }
-    #newsText { display: inline-block; white-space: nowrap; }
+    .royal-logo {
+      width: 140px;
+      height: 140px;
+      border-radius: 50%;
+      border: 3px solid var(--gold);
+      padding: 8px;
+      background: white;
+      box-shadow: 0 0 30px rgba(212, 175, 55, 0.4);
+      margin-bottom: 20px;
+      transition: transform 0.5s;
+    }
 
-    .gem-section { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; width: 90%; max-width: 1000px; padding-bottom: 50px; }
-    .gem { text-decoration: none; padding: 20px; text-align: center; font-family: 'Cinzel', serif; font-weight: bold; font-size: 1.1rem; border-radius: 15px; transition: 0.4s; border: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; background: var(--glass); backdrop-filter: blur(10px); color: white; position: relative; overflow: hidden; }
-    .gem:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.4); border-color: var(--gold); }
+    .royal-logo:hover {
+      transform: rotateY(180deg);
+    }
 
+    .royal-header h1 {
+      font-family: 'Cinzel', serif;
+      font-size: 2.5rem;
+      color: var(--gold);
+      margin: 0;
+      letter-spacing: 4px;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+    }
+
+    .royal-header p {
+      font-size: 1.1rem;
+      letter-spacing: 5px;
+      color: #ccc;
+      text-transform: uppercase;
+      margin-top: 10px;
+    }
+
+    /* News Ticker */
+    .royal-news {
+      width: 100%;
+      background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.2), transparent);
+      padding: 10px 0;
+      border-top: 1px solid var(--gold);
+      border-bottom: 1px solid var(--gold);
+      margin-bottom: 40px;
+      text-align: center;
+      font-family: 'Cinzel', serif;
+      color: var(--gold);
+      overflow: hidden;
+    }
+
+    #newsText {
+      display: inline-block;
+      white-space: nowrap;
+      animation: scrollNews 15s linear infinite;
+    }
+
+    /* Gem Buttons Grid */
+    .gem-section {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+      width: 90%;
+      max-width: 1000px;
+      padding-bottom: 50px;
+    }
+
+    .gem {
+      text-decoration: none;
+      padding: 20px;
+      text-align: center;
+      font-family: 'Cinzel', serif;
+      font-weight: bold;
+      font-size: 1.1rem;
+      border-radius: 15px;
+      transition: 0.4s;
+      border: 1px solid rgba(255,255,255,0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--glass);
+      backdrop-filter: blur(10px);
+      color: white;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .gem::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: rgba(255,255,255,0.1);
+      transform: rotate(45deg);
+      transition: 0.5s;
+    }
+
+    .gem:hover::before {
+      left: 100%;
+    }
+
+    .gem:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.4);
+      border-color: var(--gold);
+    }
+
+    /* Gem Colors */
     .ruby:hover { border-left: 5px solid var(--ruby); color: #ff4d4d; }
     .emerald:hover { border-left: 5px solid var(--emerald); color: #2ecc71; }
     .sapphire:hover { border-left: 5px solid var(--sapphire); color: #3498db; }
     .amethyst:hover { border-left: 5px solid var(--amethyst); color: #bb8fce; }
     .gold:hover { border-left: 5px solid var(--gold); color: var(--gold); }
 
-    /* DATABASE FORM STYLING */
-    .db-form { background: rgba(0,0,0,0.3); padding: 30px; border-radius: 20px; border: 1px solid var(--gold); width: 90%; max-width: 400px; margin-bottom: 50px; text-align: center; }
-    .db-form input { width: 100%; padding: 10px; margin: 10px 0; background: transparent; border: 1px solid var(--gold); color: white; border-radius: 5px; box-sizing: border-box; }
-    .db-form button { width: 100%; padding: 12px; background: var(--gold); color: black; border: none; font-weight: bold; border-radius: 5px; cursor: pointer; transition: 0.3s; }
-    .db-form button:hover { background: white; }
+    /* Footer */
+    .royal-footer {
+      margin-top: auto;
+      width: 100%;
+      text-align: center;
+      padding: 30px 0;
+      background: rgba(0,0,0,0.5);
+      border-top: 1px solid var(--gold);
+      font-size: 0.9rem;
+      letter-spacing: 2px;
+    }
 
-    .royal-footer { width: 100%; text-align: center; padding: 30px 0; background: rgba(0,0,0,0.5); border-top: 1px solid var(--gold); font-size: 0.9rem; letter-spacing: 2px; }
-    .royal-footer span { color: var(--gold); font-weight: bold; }
+    .royal-footer span {
+      color: var(--gold);
+      font-weight: bold;
+    }
+
+    /* Animations */
+    @keyframes scrollNews {
+      0% { transform: translateX(100%); }
+      100% { transform: translateX(-100%); }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 600px) {
+      .royal-header h1 { font-size: 1.5rem; }
+      .gem-section { grid-template-columns: 1fr; }
+    }
   </style>
 </head>
+
 <body>
 
 <header class="royal-header">
@@ -68,7 +193,7 @@
 </header>
 
 <section class="royal-news">
-  <div id="newsText">✦ Admissions Open for Session 2026–27 ✦ Excellence in Education ✦</div>
+  <div id="newsText">✦ Admissions Open for Session 2026–27 ✦ Excellence in Education ✦ Legacy of Scholars ✦ </div>
 </section>
 
 <section class="gem-section">
@@ -77,26 +202,17 @@
   <a href="academics.html" class="gem sapphire">Academics</a>
   <a href="login.html" class="gem amethyst">Student Portal</a>
   <a href="login.html" class="gem amethyst">Faculty Portal</a>
-  <a href="login.html" class="gem gold">LOGIN / SIGNUP</a>
+
+  <a href="login.html" class="gem gold" style="background: rgba(212, 175, 55, 0.1);">LOGIN / SIGNUP</a>
+
   <a href="contact.html" class="gem gold">Contact Us</a>
 </section>
 
-<div class="db-form">
-  <h3 style="color:var(--gold); font-family:'Cinzel';">Student Database Entry</h3>
-  <input type="text" id="stuName" placeholder="Full Name">
-  <input type="text" id="stuClass" placeholder="Class">
-  <input type="number" id="stuRoll" placeholder="Roll Number">
-  <button onclick="saveData()">SUBMIT TO CLOUD</button>
-</div>
-
 <footer class="royal-footer">
-  © 2026 The Lalit International School <br><br>
+  © 2026 The Lalit International School  
+  <br><br>
   <span>Legacy • Discipline • Excellence</span>
 </footer>
-
-<script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore-compat.js"></script>
-<script src="script.js"></script>
 
 </body>
 </html>
