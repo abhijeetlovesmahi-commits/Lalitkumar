@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Imperial Report Generator | LIS</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Poppins:wght@300;400;600&display=swap');
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #f0f2f5;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .form-container {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            max-width: 800px;
+            width: 100%;
+            margin-bottom: 40px;
+            border-top: 5px solid #D4AF37;
+        }
+
+        h2 { font-family: 'Cinzel'; color: #4a0404; text-align: center; }
+
+        .input-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        input {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        .subject-row {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 10px;
+            align-items: center;
+        }
+
+        button {
+            background: #4a0404;
+            color: #D4AF37;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        /* Certificate Styling (Hidden on screen, used for PDF) */
+        #report-card-template {
+            width: 800px;
+            padding: 50px;
+            background: #fff;
+            border: 20px solid #D4AF37;
+            position: absolute;
+            left: -9999px; /* Hide from view */
+        }
+
+        .cert-header { text-align: center; border-bottom: 2px solid #D4AF37; padding-bottom: 20px; }
+        .cert-title { font-family: 'Cinzel'; font-size: 28px; color: #4a0404; margin: 10px 0; }
+        
+        .student-info-table { width: 100%; margin: 20px 0; }
+        .marks-table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        .marks-table th, .marks-table td { border: 1px solid #4a0404; padding: 10px; text-align: center; }
+        .marks-table th { background: #f9f2e6; }
+
+        .grade-a { color: green; font-weight: bold; }
+        .grade-f { color: red; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+<div class="form-container">
+    <h2>Generate Student Report Card</h2>
+    <div class="input-grid">
+        <input type="text" id="studentName" placeholder="Student Full Name">
+        <input type="text" id="rollNo" placeholder="Roll Number">
+        <input type="text" id="className" placeholder="Class/Section">
+        <input type="text" id="session" placeholder="Session (e.g. 2026-27)">
+    </div>
+
+    <div id="subjects-container">
+        <div class="subject-row">
+            <strong>Subject Name</strong>
+            <strong>Max Marks</strong>
+            <strong>Obtained Marks</strong>
+        </div>
+        <div class="subject-row">
+            <span>English</span>
+            <input type="number" class="max-m" value="100">
+            <input type="number" class="obt-m" placeholder="00">
+        </div>
+        <div class="subject-row">
+            <span>Mathematics</span>
+            <input type="number" class="max-m" value="100">
+            <input type="number" class="obt-m" placeholder="00">
+        </div>
+        <div class="subject-row">
+            <span>Science</span>
+            <input type="number" class="max-m" value="100">
+            <input type="number" class="obt-m" placeholder="00">
+        </div>
+    </div>
+
+    <div style="text-align: center; margin-top: 20px;">
+        <button onclick="generatePDF()">Download Royal Certificate</button>
+    </div>
+</div>
+
+<div id="report-card-template">
+    <div class="cert-header">
+        <img src="logo.png" width="80" alt="Logo">
+        <div class="cert-title">The Lalit International School</div>
+        <p>Imperial Knowledge • Global Vision</p>
+        <h3 style="text-transform: uppercase; letter-spacing: 2px;">Academic Achievement Report</h3>
+    </div>
+
+    <table class="student-info-table">
+        <tr>
+            <td><strong>Name:</strong> <span id="p-name"></span></td>
+            <td><strong>Roll No:</strong> <span id="p-roll"></span></td>
+        </tr>
+        <tr>
+            <td><strong>Class:</strong> <span id="p-class"></span></td>
+            <td><strong>Session:</strong> <span id="p-session"></span></td>
+        </tr>
+    </table>
+
+    <table class="marks-table" id="marks-display">
+        <thead>
+            <tr>
+                <th>Subject</th>
+                <th>Max Marks</th>
+                <th>Obtained</th>
+                <th>Grade</th>
+            </tr>
+        </thead>
+        <tbody id="p-marks-body"></tbody>
+    </table>
+
+    <div style="margin-top: 30px; display: flex; justify-content: space-between;">
+        <div style="text-align: center;"><br>_________________<br>Class Teacher</div>
+        <div style="text-align: center;"><br>_________________<br>Principal</div>
+    </div>
+</div>
+
+<script>
+    function calculateGrade(score, max) {
+        const percent = (score / max) * 100;
+        if (percent >= 90) return "A+";
+        if (percent >= 80) return "A";
+        if (percent >= 70) return "B";
+        if (percent >= 60) return "C";
+        if (percent >= 33) return "D";
+        return "F (Fail)";
+    }
+
+    async function generatePDF() {
+        const { jsPDF } = window.jspdf;
+
+        // Fill data in template
+        document.getElementById('p-name').innerText = document.getElementById('studentName').value;
+        document.getElementById('p-roll').innerText = document.getElementById('rollNo').value;
+        document.getElementById('p-class').innerText = document.getElementById('className').value;
+        document.getElementById('p-session').innerText = document.getElementById('session').value;
+
+        const subjects = ["English", "Mathematics", "Science"];
+        const maxMarks = document.querySelectorAll('.max-m');
+        const obtMarks = document.querySelectorAll('.obt-m');
+        const body = document.getElementById('p-marks-body');
+        body.innerHTML = "";
+
+        subjects.forEach((sub, i) => {
+            const m = parseFloat(maxMarks[i].value);
+            const o = parseFloat(obtMarks[i].value) || 0;
+            const grade = calculateGrade(o, m);
+            
+            body.innerHTML += `
+                <tr>
+                    <td>${sub}</td>
+                    <td>${m}</td>
+                    <td>${o}</td>
+                    <td>${grade}</td>
+                </tr>
+            `;
+        });
+
+        // Convert template to Image then to PDF
+        const element = document.getElementById('report-card-template');
+        element.style.position = "static"; // Temporarily show for capture
+        
+        const canvas = await html2canvas(element, { scale: 2 });
+        const imgData = canvas.toDataURL('image/png');
+        
+        const pdf = new jsPDF('p', 'mm', 'a4');
+        const imgProps = pdf.getImageProperties(imgData);
+        const pdfWidth = pdf.internal.pageSize.getWidth();
+        const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+        
+        pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+        pdf.save(`${document.getElementById('studentName').value}_Report.pdf`);
+        
+        element.style.position = "absolute"; // Hide again
+        element.style.left = "-9999px";
+    }
+</script>
+
+</body>
+</html>
