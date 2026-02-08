@@ -1,73 +1,61 @@
-/*** Basic Reset ***/
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+body{
+  margin:0;
+  background:radial-gradient(circle,#1a1a1a,#000);
+  color:#f5e6c8;
+  font-family:Georgia, serif;
+  text-align:center;
 }
 
-/** Body Styles **/
-body {
-    font-family: Arial, sans-serif;
-    line-height: 1.6;
-    background-color: white; /* Background color */
-    color: #333; /* Text color */
+.royal-header{
+  padding:40px 20px;
+  border-bottom:2px solid gold;
 }
 
-/** Header Styles **/
-header {
-    background-color: #4CAF50; /* Green */
-    color: white;
-    padding: 20px;
-    text-align: center;
+.royal-logo{
+  width:120px;
+  filter:drop-shadow(0 0 12px gold);
 }
 
-/** Navigation Styles **/
-nav {
-    background-color: #FFA500; /* Saffron */
-    padding: 15px;
+h1{
+  font-size:40px;
+  letter-spacing:2px;
 }
 
-nav a {
-    color: white;
-    text-decoration: none;
-    padding: 10px 15px;
+.news{
+  background:linear-gradient(to right,#3b2f00,#ffd700,#3b2f00);
+  color:black;
+  font-weight:bold;
+  padding:10px;
 }
 
-nav a:hover {
-    background-color: #3e8e41; /* Darker green on hover */
+.menu{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:25px;
+  padding:50px;
 }
 
-/** Main Content Styles **/
-main {
-    padding: 20px;
+.gem{
+  padding:20px;
+  text-decoration:none;
+  color:white;
+  font-size:20px;
+  border-radius:16px;
+  box-shadow:0 10px 25px rgba(0,0,0,0.7);
+  transition:0.3s;
 }
 
-/** Footer Styles **/
-footer {
-    background-color: #0000FF; /* Blue */
-    color: white;
-    text-align: center;
-    padding: 10px;
+.gem:hover{
+  transform:scale(1.05);
 }
 
-/** Button Styles **/
-.button {
-    background-color: #4CAF50; /* Green */
-    color: white;
-    padding: 10px 15px;
-    border: none;
-    cursor: pointer;
-}
+.ruby{background:linear-gradient(145deg,#5a0000,#c40000);}
+.emerald{background:linear-gradient(145deg,#003b2f,#00a86b);}
+.sapphire{background:linear-gradient(145deg,#001c3d,#0047ab);}
+.gold{background:linear-gradient(145deg,#6b4e00,#ffd700); color:black;}
 
-.button:hover {
-    background-color: #3e8e41; /* Darker green */
-}
-
-/** Card Styles **/
-.card {
-    background-color: white;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    padding: 20px;
-    margin: 15px 0;
+footer{
+  padding:20px;
+  border-top:1px solid gold;
+  color:#d4b56d;
 }
