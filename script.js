@@ -1,4 +1,4 @@
-/* 1. NEWS ROTATION (Aapka Purana Code) */
+/* --- 1. NEWS ROTATION SYSTEM --- */
 const news = [
   "✦ Admissions Open 2026–27 ✦",
   "✦ International Curriculum ✦",
@@ -9,7 +9,6 @@ const news = [
 let i = 0;
 const newsBox = document.getElementById("newsText");
 
-// Ye check karne ke liye ki newsBox screen par hai ya nahi
 if (newsBox) {
   setInterval(() => {
     i = (i + 1) % news.length;
@@ -17,7 +16,7 @@ if (newsBox) {
   }, 3500);
 }
 
-/* 2. FIREBASE CONFIGURATION (Aapka Data) */
+/* --- 2. FIREBASE CONFIGURATION --- */
 const firebaseConfig = {
   apiKey: "AIzaSyADzG1BL5PkDvEFDrqopdDY2BNl6jycDkQ",
   authDomain: "school-management-system-d210c.firebaseapp.com",
@@ -27,36 +26,38 @@ const firebaseConfig = {
   appId: "1:78104585527:web:9e25193d63f4d4fd1fe6b2"
 };
 
-// Firebase ko chalu karein
+// Initialize Firebase
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 
-/* 3. STUDENT DATA SAVE FUNCTION */
+/* --- 3. SAVE STUDENT DATA FUNCTION --- */
 function saveData() {
     const name = document.getElementById('stuName').value;
     const sClass = document.getElementById('stuClass').value;
     const roll = document.getElementById('stuRoll').value;
 
-    if(name == "" || sClass == "" || roll == "") {
-        alert("Saari jankari bhariye!");
+    // Check if empty
+    if(name === "" || sClass === "" || roll === "") {
+        alert("Please fill all details correctly!");
         return;
     }
 
+    // Saving to Firestore
     db.collection("students").add({
-        studentName: name,
+        name: name,
         class: sClass,
         rollNo: roll,
         timestamp: firebase.firestore.FieldValue.serverTimestamp()
     })
     .then(() => {
-        alert("Student Added Successfully! ✅");
-        // Form ko khali karne ke liye
+        alert("Data successfully sent to Imperial Database! ✅");
+        // Clear inputs after success
         document.getElementById('stuName').value = "";
         document.getElementById('stuClass').value = "";
         document.getElementById('stuRoll').value = "";
     })
     .catch((error) => {
         console.error("Error: ", error);
-        alert("Kuch error aaya hai!");
+        alert("Connection failed. Check your internet.");
     });
 }
