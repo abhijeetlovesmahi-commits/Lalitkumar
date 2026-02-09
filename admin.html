@@ -2,14 +2,21 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Admin Dashboard | The Lalit School</title>
+  <title>Admin Login | The Lalit School</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Poppins:wght@300;400;500&display=swap');
     :root { --gold: #D4AF37; --glass: rgba(255, 255, 255, 0.05); }
-    body { margin: 0; font-family: 'Poppins', sans-serif; background: #000c1a; color: white; padding: 20px; }
-    h1 { font-family: 'Cinzel'; color: var(--gold); text-align: center; }
-    .table-container { overflow-x: auto; width: 100%; margin-top: 20px; }
+    body { margin: 0; font-family: 'Poppins', sans-serif; background: #000c1a; color: white; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; }
+    
+    /* Login Box Style */
+    #loginBox { background: var(--glass); padding: 40px; border-radius: 20px; border: 1px solid var(--gold); text-align: center; box-shadow: 0 0 30px rgba(0,0,0,0.5); }
+    input { width: 100%; padding: 12px; margin: 10px 0; border-radius: 8px; border: 1px solid var(--gold); background: transparent; color: white; box-sizing: border-box; }
+    .btn-login { width: 100%; padding: 12px; background: var(--gold); color: black; border: none; font-weight: bold; border-radius: 8px; cursor: pointer; font-family: 'Cinzel'; }
+    
+    /* Main Content (Hidden by default) */
+    #adminContent { display: none; width: 95%; padding: 20px; }
+    .table-container { overflow-x: auto; margin-top: 20px; }
     table { width: 100%; border-collapse: collapse; background: var(--glass); border: 1px solid var(--gold); }
     th { background: rgba(212, 175, 55, 0.2); color: var(--gold); padding: 10px; text-align: left; border-bottom: 2px solid var(--gold); font-family: 'Cinzel'; }
     td { padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.1); font-size: 0.9rem; }
@@ -17,29 +24,39 @@
     .edit-btn { background: var(--gold); color: black; }
     .del-btn { background: #9b111e; color: white; }
     
-    /* Edit Modal Style */
-    #editModal { display:none; position:fixed; top:50%; left:50%; transform:translate(-50%, -50%); background:#001f3f; border:2px solid var(--gold); padding:20px; border-radius:15px; z-index:100; width:300px; box-shadow: 0 0 50px black; }
-    #editModal input { width:100%; margin:5px 0; padding:8px; border-radius:5px; border:1px solid var(--gold); background:transparent; color:white; }
+    #editModal { display:none; position:fixed; top:50%; left:50%; transform:translate(-50%, -50%); background:#001f3f; border:2px solid var(--gold); padding:20px; border-radius:15px; z-index:100; width:300px; }
+    #editModal input { width:100%; margin:5px 0; }
   </style>
 </head>
 <body>
-  <h1>Imperial Student Database</h1>
-  
-  <div class="table-container">
-    <table>
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Class</th>
-          <th>Roll</th>
-          <th>Father</th>
-          <th>Aadhar</th>
-          <th>Address</th>
-          <th>Action</th>
-        </tr>
-      </thead>
-      <tbody id="studentTableBody"></tbody>
-    </table>
+
+  <div id="loginBox">
+    <h2 style="font-family:'Cinzel'; color:var(--gold);">Imperial Admin Login</h2>
+    <input type="password" id="adminPass" placeholder="Enter Admin Password">
+    <button class="btn-login" onclick="checkPass()">ENTER DATABASE</button>
+  </div>
+
+  <div id="adminContent">
+    <div style="display:flex; justify-content:space-between; align-items:center;">
+        <h1 style="font-family:'Cinzel'; color:var(--gold);">Imperial Student Database</h1>
+        <button class="del-btn" onclick="location.reload()" style="height:40px;">LOGOUT</button>
+    </div>
+    
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Class</th>
+            <th>Roll</th>
+            <th>Father</th>
+            <th>Aadhar</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody id="studentTableBody"></tbody>
+      </table>
+    </div>
   </div>
 
   <div id="editModal">
@@ -50,7 +67,6 @@
     <input type="text" id="editRoll" placeholder="Roll">
     <input type="text" id="editFather" placeholder="Father">
     <input type="text" id="editAadhar" placeholder="Aadhar">
-    <input type="text" id="editAddress" placeholder="Address">
     <button class="btn edit-btn" onclick="updateData()">Save Changes</button>
     <button class="btn" onclick="document.getElementById('editModal').style.display='none'">Cancel</button>
   </div>
@@ -69,6 +85,18 @@
     firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
 
+    // Password Check Function
+    function checkPass() {
+      const pass = document.getElementById('adminPass').value;
+      if(pass === "Lalit@2026") { // Aap yahan apna pasandida password rakh sakte hain
+        document.getElementById('loginBox').style.display = 'none';
+        document.getElementById('adminContent').style.display = 'block';
+        loadData();
+      } else {
+        alert("Wrong Password! Access Denied.");
+      }
+    }
+
     function loadData() {
       db.collection("students").orderBy("timestamp", "desc").onSnapshot((snap) => {
         const table = document.getElementById("studentTableBody");
@@ -81,9 +109,8 @@
             <td>${s.rollNo || '-'}</td>
             <td>${s.father || '-'}</td>
             <td>${s.aadhar || '-'}</td>
-            <td>${s.address || '-'}</td>
             <td>
-              <button class="btn edit-btn" onclick="openEdit('${doc.id}', '${s.name}', '${s.class}', '${s.rollNo}', '${s.father}', '${s.aadhar}', '${s.address}')">Edit</button>
+              <button class="btn edit-btn" onclick="openEdit('${doc.id}', '${s.name}', '${s.class}', '${s.rollNo}', '${s.father}', '${s.aadhar}')">Edit</button>
               <button class="btn del-btn" onclick="deleteData('${doc.id}')">Del</button>
             </td>
           </tr>`;
@@ -91,7 +118,8 @@
       });
     }
 
-    function openEdit(id, n, c, r, f, a, ad) {
+    // ... (Purana openEdit, updateData aur deleteData functions yahan niche rahenge) ...
+    function openEdit(id, n, c, r, f, a) {
       document.getElementById('editModal').style.display = 'block';
       document.getElementById('editId').value = id;
       document.getElementById('editName').value = n;
@@ -99,7 +127,6 @@
       document.getElementById('editRoll').value = r;
       document.getElementById('editFather').value = f;
       document.getElementById('editAadhar').value = a;
-      document.getElementById('editAddress').value = ad;
     }
 
     function updateData() {
@@ -109,8 +136,7 @@
         class: document.getElementById('editClass').value,
         rollNo: document.getElementById('editRoll').value,
         father: document.getElementById('editFather').value,
-        aadhar: document.getElementById('editAadhar').value,
-        address: document.getElementById('editAddress').value
+        aadhar: document.getElementById('editAadhar').value
       }).then(() => {
         alert("Updated!");
         document.getElementById('editModal').style.display = 'none';
@@ -120,7 +146,6 @@
     function deleteData(id) {
       if(confirm("Are you sure?")) db.collection("students").doc(id).delete();
     }
-    window.onload = loadData;
   </script>
 </body>
 </html>
