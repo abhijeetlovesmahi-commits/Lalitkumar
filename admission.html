@@ -7,32 +7,41 @@
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Poppins:wght@300;400;500&display=swap');
     :root { --gold: #D4AF37; --glass: rgba(255, 255, 255, 0.05); }
-    body { margin: 0; font-family: 'Poppins', sans-serif; background: radial-gradient(circle at center, #001f3f 0%, #000c1a 100%); color: white; min-height: 100vh; display: flex; flex-direction: column; align-items: center; padding: 20px; }
-    .form-box { width: 90%; max-width: 700px; background: var(--glass); backdrop-filter: blur(15px); border: 1px solid var(--gold); border-radius: 20px; padding: 30px; box-shadow: 0 0 30px rgba(0,0,0,0.5); }
+    body { margin: 0; font-family: 'Poppins', sans-serif; background: #000c1a; color: white; min-height: 100vh; display: flex; flex-direction: column; align-items: center; padding: 20px; }
+    .form-box { width: 90%; max-width: 700px; background: var(--glass); backdrop-filter: blur(15px); border: 1px solid var(--gold); border-radius: 20px; padding: 30px; }
     h2 { font-family: 'Cinzel', serif; color: var(--gold); text-align: center; }
     .input-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; }
-    input { width: 100%; padding: 12px; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(212, 175, 55, 0.3); border-radius: 8px; color: white; box-sizing: border-box; outline: none; margin-bottom: 10px; }
-    input:focus { border-color: var(--gold); }
-    .btn-save { width: 100%; padding: 15px; background: var(--gold); color: black; border: none; border-radius: 10px; font-weight: bold; font-family: 'Cinzel'; cursor: pointer; font-size: 1.1rem; margin-top: 20px; }
+    input { width: 100%; padding: 12px; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(212, 175, 55, 0.3); border-radius: 8px; color: white; box-sizing: border-box; margin-bottom: 10px; }
+    .photo-input { border: 1px dashed var(--gold); padding: 20px; text-align: center; cursor: pointer; margin-bottom: 20px; border-radius: 10px; }
+    .btn-save { width: 100%; padding: 15px; background: var(--gold); color: black; border: none; border-radius: 10px; font-weight: bold; font-family: 'Cinzel'; cursor: pointer; font-size: 1.1rem; }
+    #uploadMsg { color: #00ff00; font-size: 0.8rem; display: none; margin-top: 5px; }
   </style>
 </head>
 <body>
   <div class="form-box">
     <h2>New Student Admission</h2>
+    
+    <div class="photo-input">
+      <label for="stuPhoto" style="color:var(--gold); cursor:pointer;">Click to Upload Student Photo</label>
+      <input type="file" id="stuPhoto" accept="image/*" style="display:none;" onchange="showMsg()">
+      <p id="uploadMsg">Photo Selected! ✅</p>
+    </div>
+
     <div class="input-grid">
       <input type="text" id="stuName" placeholder="Student Full Name">
-      <input type="text" id="stuClass" placeholder="Class (e.g. 10th)">
+      <input type="text" id="stuClass" placeholder="Class">
       <input type="number" id="stuRoll" placeholder="Roll Number">
       <input type="text" id="stuFather" placeholder="Father's Name">
-      <input type="text" id="stuMother" placeholder="Mother's Name">
       <input type="number" id="stuAadhar" placeholder="Aadhar Number">
     </div>
     <input type="text" id="stuAddress" placeholder="Full Address">
-    <button class="btn-save" onclick="saveData()">SUBMIT ADMISSION</button>
+    <button class="btn-save" id="submitBtn" onclick="uploadAndSave()">SUBMIT ADMISSION</button>
   </div>
 
   <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-storage-compat.js"></script>
+  
   <script>
     const firebaseConfig = {
       apiKey: "AIzaSyADzG1BL5PkDvEFDrqopdDY2BNl6jycDkQ",
@@ -44,23 +53,46 @@
     };
     firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
+    const storage = firebase.storage();
 
-    function saveData() {
-      const data = {
-        name: document.getElementById('stuName').value,
-        class: document.getElementById('stuClass').value,
-        rollNo: document.getElementById('stuRoll').value,
-        father: document.getElementById('stuFather').value,
-        mother: document.getElementById('stuMother').value,
-        aadhar: document.getElementById('stuAadhar').value,
-        address: document.getElementById('stuAddress').value,
-        timestamp: firebase.firestore.FieldValue.serverTimestamp()
-      };
-      if(!data.name || !data.class) { alert("Please fill Name and Class!"); return; }
-      db.collection("students").add(data).then(() => {
-        alert("Success! Record added.");
+    function showMsg() { document.getElementById('uploadMsg').style.display = 'block'; }
+
+    async function uploadAndSave() {
+      const file = document.getElementById('stuPhoto').files[0];
+      const btn = document.getElementById('submitBtn');
+      
+      if(!file) { alert("Please select a photo first!"); return; }
+      
+      btn.innerText = "Uploading... Please wait";
+      btn.disabled = true;
+
+      try {
+        // 1. Photo Upload to Firebase Storage
+        const storageRef = storage.ref('student_photos/' + Date.now() + "_" + file.name);
+        const snapshot = await storageRef.put(file);
+        const photoUrl = await snapshot.ref.getDownloadURL();
+
+        // 2. Data Save to Firestore
+        const data = {
+          name: document.getElementById('stuName').value,
+          class: document.getElementById('stuClass').value,
+          rollNo: document.getElementById('stuRoll').value,
+          father: document.getElementById('stuFather').value,
+          aadhar: document.getElementById('stuAadhar').value,
+          address: document.getElementById('stuAddress').value,
+          photo: photoUrl, // Photo Link saved here
+          timestamp: firebase.firestore.FieldValue.serverTimestamp()
+        };
+
+        await db.collection("students").add(data);
+        alert("Success! Admission complete with Photo. ✅");
         location.reload();
-      }).catch(err => alert("Error: " + err));
+
+      } catch (err) {
+        alert("Error: " + err.message);
+        btn.disabled = false;
+        btn.innerText = "SUBMIT ADMISSION";
+      }
     }
   </script>
 </body>
