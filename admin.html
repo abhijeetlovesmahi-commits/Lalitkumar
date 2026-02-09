@@ -2,73 +2,80 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Admin Login | The Lalit School</title>
+  <title>Imperial Admin | Lalit International School</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Poppins:wght@300;400;500&display=swap');
     :root { --gold: #D4AF37; --glass: rgba(255, 255, 255, 0.05); }
-    body { margin: 0; font-family: 'Poppins', sans-serif; background: #000c1a; color: white; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; }
+    body { margin: 0; font-family: 'Poppins', sans-serif; background: #000c1a; color: white; display: flex; flex-direction: column; align-items: center; min-height: 100vh; }
     
-    /* Login Box Style */
-    #loginBox { background: var(--glass); padding: 40px; border-radius: 20px; border: 1px solid var(--gold); text-align: center; box-shadow: 0 0 30px rgba(0,0,0,0.5); }
+    #loginBox { margin-top: 100px; background: var(--glass); padding: 40px; border-radius: 20px; border: 1px solid var(--gold); text-align: center; }
     input { width: 100%; padding: 12px; margin: 10px 0; border-radius: 8px; border: 1px solid var(--gold); background: transparent; color: white; box-sizing: border-box; }
     .btn-login { width: 100%; padding: 12px; background: var(--gold); color: black; border: none; font-weight: bold; border-radius: 8px; cursor: pointer; font-family: 'Cinzel'; }
     
-    /* Main Content (Hidden by default) */
     #adminContent { display: none; width: 95%; padding: 20px; }
-    .table-container { overflow-x: auto; margin-top: 20px; }
+    .nav-tabs { display: flex; gap: 10px; margin-bottom: 20px; border-bottom: 1px solid var(--gold); padding-bottom: 10px; }
+    .tab-btn { background: transparent; color: var(--gold); border: 1px solid var(--gold); padding: 10px 20px; cursor: pointer; font-family: 'Cinzel'; border-radius: 5px; }
+    .tab-btn.active { background: var(--gold); color: black; }
+
+    .table-container { overflow-x: auto; display: none; }
+    .table-container.active { display: block; }
     table { width: 100%; border-collapse: collapse; background: var(--glass); border: 1px solid var(--gold); }
     th { background: rgba(212, 175, 55, 0.2); color: var(--gold); padding: 10px; text-align: left; border-bottom: 2px solid var(--gold); font-family: 'Cinzel'; }
     td { padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.1); font-size: 0.9rem; }
-    .btn { cursor: pointer; border: none; padding: 5px 10px; border-radius: 4px; font-weight: bold; margin: 2px; }
-    .edit-btn { background: var(--gold); color: black; }
-    .del-btn { background: #9b111e; color: white; }
     
-    #editModal { display:none; position:fixed; top:50%; left:50%; transform:translate(-50%, -50%); background:#001f3f; border:2px solid var(--gold); padding:20px; border-radius:15px; z-index:100; width:300px; }
-    #editModal input { width:100%; margin:5px 0; }
+    .btn { cursor: pointer; border: none; padding: 5px 10px; border-radius: 4px; font-weight: bold; }
+    .fee-paid { background: #046307; color: white; }
+    .fee-pending { background: #cc8e35; color: white; }
+    .att-p { background: #046307; color: white; } /* Present */
+    .att-a { background: #9b111e; color: white; } /* Absent */
   </style>
 </head>
 <body>
 
   <div id="loginBox">
     <h2 style="font-family:'Cinzel'; color:var(--gold);">Imperial Admin Login</h2>
-    <input type="password" id="adminPass" placeholder="Enter Admin Password">
+    <input type="password" id="adminPass" placeholder="Enter Password">
     <button class="btn-login" onclick="checkPass()">ENTER DATABASE</button>
   </div>
 
   <div id="adminContent">
-    <div style="display:flex; justify-content:space-between; align-items:center;">
-        <h1 style="font-family:'Cinzel'; color:var(--gold);">Imperial Student Database</h1>
-        <button class="del-btn" onclick="location.reload()" style="height:40px;">LOGOUT</button>
-    </div>
+    <h1 style="font-family:'Cinzel'; color:var(--gold); text-align:center;">Imperial Management Dashboard</h1>
     
-    <div class="table-container">
+    <div class="nav-tabs">
+      <button class="tab-btn active" onclick="switchTab('studentsTab', this)">Students & Fees</button>
+      <button class="tab-btn" onclick="switchTab('attendanceTab', this)">Daily Attendance</button>
+    </div>
+
+    <div id="studentsTab" class="table-container active">
       <table>
         <thead>
           <tr>
             <th>Name</th>
             <th>Class</th>
             <th>Roll</th>
-            <th>Father</th>
-            <th>Aadhar</th>
+            <th>Fees Status</th>
             <th>Action</th>
           </tr>
         </thead>
         <tbody id="studentTableBody"></tbody>
       </table>
     </div>
-  </div>
 
-  <div id="editModal">
-    <h3 style="color:var(--gold); font-family:'Cinzel'">Edit Details</h3>
-    <input type="hidden" id="editId">
-    <input type="text" id="editName" placeholder="Name">
-    <input type="text" id="editClass" placeholder="Class">
-    <input type="text" id="editRoll" placeholder="Roll">
-    <input type="text" id="editFather" placeholder="Father">
-    <input type="text" id="editAadhar" placeholder="Aadhar">
-    <button class="btn edit-btn" onclick="updateData()">Save Changes</button>
-    <button class="btn" onclick="document.getElementById('editModal').style.display='none'">Cancel</button>
+    <div id="attendanceTab" class="table-container">
+      <h3 style="color:var(--gold)">Mark Attendance: <span id="currentDate"></span></h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Roll</th>
+            <th>Name</th>
+            <th>Class</th>
+            <th>Status (Click to toggle)</th>
+          </tr>
+        </thead>
+        <tbody id="attendanceTableBody"></tbody>
+      </table>
+    </div>
   </div>
 
   <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
@@ -85,62 +92,58 @@
     firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
 
-    // Password Check Function
     function checkPass() {
-      const pass = document.getElementById('adminPass').value;
-      if(pass === "Lalit@2026") { // Aap yahan apna pasandida password rakh sakte hain
+      if(document.getElementById('adminPass').value === "Lalit@2026") {
         document.getElementById('loginBox').style.display = 'none';
         document.getElementById('adminContent').style.display = 'block';
+        document.getElementById('currentDate').innerText = new Date().toLocaleDateString();
         loadData();
-      } else {
-        alert("Wrong Password! Access Denied.");
-      }
+      } else { alert("Wrong Password!"); }
+    }
+
+    function switchTab(tabId, btn) {
+      document.querySelectorAll('.table-container').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.getElementById(tabId).classList.add('active');
+      btn.classList.add('active');
     }
 
     function loadData() {
-      db.collection("students").orderBy("timestamp", "desc").onSnapshot((snap) => {
-        const table = document.getElementById("studentTableBody");
-        table.innerHTML = "";
+      db.collection("students").orderBy("rollNo", "asc").onSnapshot((snap) => {
+        const studentTable = document.getElementById("studentTableBody");
+        const attendanceTable = document.getElementById("attendanceTableBody");
+        studentTable.innerHTML = "";
+        attendanceTable.innerHTML = "";
+
         snap.forEach((doc) => {
           const s = doc.data();
-          table.innerHTML += `<tr>
-            <td>${s.name || '-'}</td>
-            <td>${s.class || '-'}</td>
-            <td>${s.rollNo || '-'}</td>
-            <td>${s.father || '-'}</td>
-            <td>${s.aadhar || '-'}</td>
-            <td>
-              <button class="btn edit-btn" onclick="openEdit('${doc.id}', '${s.name}', '${s.class}', '${s.rollNo}', '${s.father}', '${s.aadhar}')">Edit</button>
-              <button class="btn del-btn" onclick="deleteData('${doc.id}')">Del</button>
-            </td>
+          const feeStatus = s.fees || "Pending";
+          const feeClass = feeStatus === "Paid" ? "fee-paid" : "fee-pending";
+          const attStatus = s.attendance || "Absent";
+          const attClass = attStatus === "Present" ? "att-p" : "att-a";
+
+          // Tab 1 Data
+          studentTable.innerHTML += `<tr>
+            <td>${s.name}</td><td>${s.class}</td><td>${s.rollNo}</td>
+            <td><button class="btn ${feeClass}" onclick="toggleFees('${doc.id}', '${feeStatus}')">${feeStatus}</button></td>
+            <td><button class="btn att-a" style="background:#9b111e" onclick="deleteData('${doc.id}')">Del</button></td>
+          </tr>`;
+
+          // Tab 2 Data
+          attendanceTable.innerHTML += `<tr>
+            <td>${s.rollNo}</td><td>${s.name}</td><td>${s.class}</td>
+            <td><button class="btn ${attClass}" onclick="toggleAttendance('${doc.id}', '${attStatus}')">${attStatus}</button></td>
           </tr>`;
         });
       });
     }
 
-    // ... (Purana openEdit, updateData aur deleteData functions yahan niche rahenge) ...
-    function openEdit(id, n, c, r, f, a) {
-      document.getElementById('editModal').style.display = 'block';
-      document.getElementById('editId').value = id;
-      document.getElementById('editName').value = n;
-      document.getElementById('editClass').value = c;
-      document.getElementById('editRoll').value = r;
-      document.getElementById('editFather').value = f;
-      document.getElementById('editAadhar').value = a;
+    function toggleFees(id, current) {
+      db.collection("students").doc(id).update({ fees: current === "Paid" ? "Pending" : "Paid" });
     }
 
-    function updateData() {
-      const id = document.getElementById('editId').value;
-      db.collection("students").doc(id).update({
-        name: document.getElementById('editName').value,
-        class: document.getElementById('editClass').value,
-        rollNo: document.getElementById('editRoll').value,
-        father: document.getElementById('editFather').value,
-        aadhar: document.getElementById('editAadhar').value
-      }).then(() => {
-        alert("Updated!");
-        document.getElementById('editModal').style.display = 'none';
-      });
+    function toggleAttendance(id, current) {
+      db.collection("students").doc(id).update({ attendance: current === "Present" ? "Absent" : "Present" });
     }
 
     function deleteData(id) {
